@@ -1,53 +1,53 @@
-# Modelo de datos — API Facturas **v1**: la tabla `producto`
+# Modelo de datos — Versión 1: la BD completa, la API solo usa `producto`
 
-> **Versión 1** · Una sola entidad, un solo motor. El modelo completo de
-> `bdfacturas` (12 tablas, trigger, SPs) es la visión final; v1 crea
-> únicamente lo que usa.
+> **Versión 1** · Decisión clave: **la base de datos `bdfacturas` se crea
+> COMPLETA desde el inicio** (las 12 tablas, sus datos de ejemplo, el trigger
+> de totales/stock y los procedimientos almacenados). Usted ya vio bases de
+> datos — la BD no es lo que se construye por versiones: **lo que crece
+> versión a versión es la API**. La v1 solo usa la tabla `producto`; el resto
+> ya está ahí, esperando a las versiones siguientes.
 
 ---
 
-## 1. La entidad
+## 1. El script de la BD (artefacto de esta versión)
+
+El script completo viene **provisto** en el repositorio: **`db/init.sql`**
+(~960 líneas: 12 tablas, restricciones, secuencias, datos de ejemplo, trigger
+y SPs en dialecto PostgreSQL). **Se copia tal cual — no se escribe ni se
+genera con IA.** Es infraestructura dada, igual que la imagen de PostgreSQL.
+
+Vista rápida de lo que crea:
+
+```
+Independientes:  empresa · persona · producto · rol · ruta · usuario
+Con FK:          cliente · vendedor · factura · productosporfactura
+                 rol_usuario · rutarol
+Lógica en BD:    trigger actualizar_totales_y_stock (productosporfactura)
+                 + procedimientos almacenados de facturación y RBAC
+```
+
+## 2. La tabla que la v1 SÍ usa: `producto`
 
 | Columna | Tipo | Restricción | Descripción |
 |---|---|---|---|
-| `codigo` | VARCHAR(20) | **PK** | Identificador legible (PR001…) |
+| `codigo` | VARCHAR(10) | **PK** | Identificador legible (PR001…) |
 | `nombre` | VARCHAR(100) | NOT NULL | Nombre del producto |
-| `stock` | INTEGER | NOT NULL, `CHECK (stock >= 0)` | Unidades disponibles |
-| `valorunitario` | NUMERIC(12,2) | NOT NULL, `CHECK (valorunitario >= 0)` | Precio unitario |
+| `stock` | INTEGER | NOT NULL | Unidades disponibles |
+| `valorunitario` | NUMERIC | NOT NULL | Precio unitario |
 
-Doble validación deliberada: **Pydantic** rechaza entradas inválidas en la API
-(422) y los **CHECK** de la BD son la última línea de defensa — el mismo dato
-está protegido en dos capas distintas.
+Datos de ejemplo: **8 productos** (PR001 Laptop Lenovo IdeaPad, 17,
+2.500.000 … PR008 Disco Duro Seagate 1TB, 32, 280.000).
 
-## 2. `init.sql` de la v1 (completo)
+**Nota sobre validación:** los valores no-negativos de stock y valorunitario
+los garantiza **Pydantic en la API** (la frontera de entrada, con 422). La
+tabla también tiene una relación entrante: `productosporfactura.fkcodproducto`
+→ eliminar un producto que aparezca en una factura fallará por FK (la API
+mostrará el 500 con el error del motor — integridad referencial en acción).
 
-```sql
--- v1: solo la tabla producto y sus datos de ejemplo
-CREATE TABLE producto (
-    codigo        VARCHAR(20)   PRIMARY KEY,
-    nombre        VARCHAR(100)  NOT NULL,
-    stock         INTEGER       NOT NULL CHECK (stock >= 0),
-    valorunitario NUMERIC(12,2) NOT NULL CHECK (valorunitario >= 0)
-);
-
-INSERT INTO producto (codigo, nombre, stock, valorunitario) VALUES
-('PR001', 'Laptop Lenovo IdeaPad',      17, 2500000),
-('PR002', 'Monitor Samsung 24"',        27,  800000),
-('PR003', 'Teclado Logitech K380',      42,  150000),
-('PR004', 'Mouse HP',                   55,   90000),
-('PR005', 'Impresora Epson EcoTank1',   14, 1100000),
-('PR006', 'Auriculares Sony WH-CH510',  23,  240000),
-('PR007', 'Tablet Samsung Tab A9',      15,  950000),
-('PR008', 'Disco Duro Seagate 1TB',     32,  280000);
-```
-
-Los datos coinciden con los de la BD final `bdfacturas`: cuando v2 agregue las
-demás tablas, `producto` no cambia.
-
-## 3. Montar PostgreSQL para la v1
+## 3. Montar la BD para la v1
 
 ```powershell
-# guardar el SQL de arriba como db/init.sql y desde la raíz del proyecto:
+# desde la raíz del proyecto (db/init.sql ya está en el repo):
 docker run -d --name bd_v1 -p 15432:5432 `
   -e POSTGRES_DB=bdfacturas_postgres_local `
   -e POSTGRES_USER=paradigmas -e POSTGRES_PASSWORD=paradigmas123 `
@@ -61,9 +61,19 @@ Cadena de conexión para la API (variable de entorno):
 DB_POSTGRES=postgresql+asyncpg://paradigmas:paradigmas123@localhost:15432/bdfacturas_postgres_local
 ```
 
-## 4. Qué NO existe todavía (a propósito)
+Verificación: un cliente SQL debe ver **12 tablas** y `SELECT count(*) FROM
+producto` debe dar **8**.
 
-Ni `persona`, ni `factura`, ni FKs, ni el trigger de totales/stock, ni SPs:
-llegan con la v2+ ([mapa de versiones](../0_mapa_versiones.md)). El nombre de
-la BD ya es el definitivo para que las versiones siguientes solo **agreguen**
-tablas al mismo sitio.
+## 4. Qué toca la API en cada versión (la BD no cambia)
+
+| Versión | Tablas que usa la API |
+|---|---|
+| **v1** | `producto` — nada más |
+| v2 | + persona, empresa, cliente, vendedor, factura, productosporfactura (el trigger que ya vive en la BD empieza a trabajar) |
+| v3–v4 | las mismas, contra más motores |
+| v5 | la API genérica puede leer cualquiera de las 12 |
+| v6 | el front las ve a través de las APIs |
+
+**Regla de la v1:** el código solo puede nombrar la tabla `producto`. Que las
+otras 11 existan no es invitación a usarlas — eso es alcance de las versiones
+siguientes.

@@ -3,7 +3,9 @@
 > **Versión 1** del desarrollo incremental ([mapa de versiones](../0_mapa_versiones.md)).
 > Rige la constitución del proyecto: [../../1_constitution.md](../../1_constitution.md).
 > En v1 el sistema completo ES esto: **no existe frontend, no existe API
-> genérica, no hay más tablas ni más motores.**
+> genérica, y la API solo conoce una entidad y un motor.** (La BD `bdfacturas`
+> sí se crea COMPLETA desde el inicio — es infraestructura dada, ver
+> [5_data_model.md](5_data_model.md); lo que crece por versiones es la API.)
 >
 > | Documento de esta versión | Contenido |
 > |---|---|
@@ -40,9 +42,11 @@ frontend (v6) **sin reescribir lo construido**.
 
 **No incluye (y es deliberado — ver [mapa de versiones](../0_mapa_versiones.md)):**
 - **Ningún frontend** (llega en v6) y **ninguna API genérica** (llega en v5).
-- Otras tablas (v2) · otros motores y la fábrica `DB_PROVIDER` (v3, v4) ·
-  docker compose e imagen propia (v4).
-- Autenticación, triggers/SPs de facturación (llegan con `factura` en v2+).
+- Endpoints para otras entidades (v2) — las otras 11 tablas EXISTEN en la BD,
+  pero el código de la v1 solo puede nombrar `producto`.
+- Otros motores y la fábrica `DB_PROVIDER` (v3, v4) · docker compose e imagen
+  propia de la API (v4).
+- Autenticación y uso del trigger/SPs de facturación (los aprovechará la v2).
 
 ## 3. Requisitos funcionales
 
@@ -96,8 +100,9 @@ inexistente → 404.
 
 ## 5. Criterios de aceptación
 
-1. PostgreSQL arranca con el `init.sql` de [5_data_model.md](5_data_model.md)
-   y `uvicorn main:app --port 8002` levanta la API; `GET /` responde el JSON
+1. PostgreSQL arranca con el `db/init.sql` provisto (la BD completa: 12
+   tablas — ver [5_data_model.md](5_data_model.md)) y
+   `uvicorn main:app --port 8002` levanta la API; `GET /` responde el JSON
    de diagnóstico y `/docs` abre Swagger.
 2. `GET /api/producto` devuelve los 8 productos de ejemplo con
    `{tabla:"producto", total:8, datos:[…]}`, y `GET /api/producto?limite=3`

@@ -8,8 +8,10 @@
 ---
 
 ## Fase 0 — Base de datos y esqueleto
-- [ ] Guardar el `init.sql` de [5_data_model.md](5_data_model.md) §2 en
-      `db/init.sql` y montar PostgreSQL con la receta de §3.
+- [ ] Copiar a `db/init.sql` el script **provisto** con esta versión (la BD
+      `bdfacturas` COMPLETA — no se escribe ni se genera con IA; ver
+      [5_data_model.md](5_data_model.md) §1) y montar PostgreSQL con la
+      receta de §3.
 - [ ] Crear la carpeta `api_facturas/` con subcarpetas `models/`,
       `controllers/`, `servicios/` (`abstracciones/`), `repositorios/`
       (`abstracciones/`) y sus `__init__.py`.
@@ -18,7 +20,7 @@
 - [ ] Entorno virtual + `pip install -r requirements.txt`.
 
 **Verificar:** `python -c "import fastapi, sqlalchemy, asyncpg"` no falla, y un
-cliente SQL ve la tabla `producto` con 8 filas.
+cliente SQL ve las **12 tablas** de `bdfacturas` con **8 filas en `producto`**.
 
 ## Fase 1 — Modelos Pydantic (uno por semántica HTTP)
 - [ ] `models/producto.py`: `Producto` (POST, todos obligatorios),

@@ -18,7 +18,7 @@
 
 | Versión | Carpeta | Qué EXISTE al terminarla | Qué concepto nuevo enseña |
 |---|---|---|---|
-| **v1** | [v1_producto_postgres/](v1_producto_postgres/2_spec.md) | SOLO `api_facturas` con el CRUD de **producto** contra **PostgreSQL**. **Nada de front, nada de API genérica, ninguna otra tabla ni motor.** | Arquitectura en capas con interfaces desde el día 1 |
+| **v1** | [v1_producto_postgres/](v1_producto_postgres/2_spec.md) | SOLO `api_facturas` con el CRUD de **producto** contra **PostgreSQL**. **Nada de front, nada de API genérica, ningún otro motor.** (La BD `bdfacturas` se crea COMPLETA desde el inicio — es infraestructura dada; la API solo toca `producto`.) | Arquitectura en capas con interfaces desde el día 1 |
 | **v2** | v2_mas_tablas/ *(se especifica al terminar v1)* | api_facturas con persona, empresa, cliente, vendedor y factura (maestro-detalle + trigger), solo PostgreSQL | Validación Pydantic por entidad; FKs, integridad referencial y lógica en la BD |
 | **v3** | v3_segundo_motor/ | Lo mismo, ahora también contra **MariaDB** | Nace `DB_PROVIDER` y la **fábrica** — abierto/cerrado en acción: cero cambios en controllers y servicios |
 | **v4** | v4_sqlserver_docker/ | Tercer motor (**SQL Server**), las 12 tablas, y todo orquestado con **docker compose** | Liskov entre repositorios; contenedores, volúmenes y healthchecks |

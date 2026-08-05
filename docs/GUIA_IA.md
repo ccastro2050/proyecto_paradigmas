@@ -43,6 +43,10 @@ de cada uno en el mismo orden):
 | 6 | `.../v1_producto_postgres/7_quickstart.md` | El smoke test de validación |
 | 7 | `.../v1_producto_postgres/8_tasks.md` | Las fases, en orden |
 
+Además de los 7 documentos, la versión trae **un artefacto que NO se sube al
+chat ni lo genera la IA**: `db/init.sql` (el script completo de la BD) —
+usted lo **copia tal cual** del repositorio a su proyecto (ver A.3).
+
 **No suba nada más.** El mapa de versiones no hace falta (y le revelaría a la
 IA lo que viene — la regla es que la v1 no anticipa).
 
@@ -105,7 +109,7 @@ La estructura final que usted irá creando en SU carpeta (es la de
 mi_v1_producto/                   ← SU carpeta (nueva, vacía al empezar)
 ├── specs/                        ← copia de los 7 documentos (solo lectura)
 ├── db/
-│   └── init.sql                  ← Fase 0: el SQL de 5_data_model.md §2
+│   └── init.sql                  ← Fase 0: COPIADO del repo (la BD completa; no lo genera la IA)
 ├── .venv/                        ← Fase 0: el entorno virtual (lo crea un comando)
 └── api_facturas/                 ← TODO el código va aquí adentro
     ├── requirements.txt          ← Fase 0
@@ -136,7 +140,7 @@ entrega tres tipos de cosas:
 | La IA le entrega | Usted lo pone en |
 |---|---|
 | Un bloque de código con su ruta (ej.: "Archivo: `api_facturas/models/producto.py`") | Ese archivo, en ESA ruta exacta — un bloque = un archivo completo (reemplaza todo el contenido, no "agregue al final") |
-| Un bloque SQL | `db/init.sql` (solo en la Fase 0) |
+| (La BD no la entrega la IA) | `db/init.sql` se **copia del repositorio** tal cual, en la Fase 0 — si la IA intenta escribirle un `CREATE TABLE`, recuérdele que la BD ya viene dada |
 | Comandos (docker run, pip install, uvicorn, curl) | La terminal integrada del IDE, parado en la carpeta correcta (ver abajo) |
 
 Si un bloque llega **sin ruta**, no adivine: pregúntele "¿en qué archivo va
@@ -193,8 +197,9 @@ comandos en la terminal (pidiendo permiso). Usted pasa de operador a
 la referencia). El agente construye en SU proyecto:
 
 1. Cree una carpeta nueva y vacía para su proyecto (ej.: `mi_v1_producto/`) y
-   copie dentro, en una subcarpeta `specs/`, los 7 documentos de la tabla A.1
-   (desde la carpeta clonada o desde GitHub).
+   copie dentro: los 7 documentos de la tabla A.1 en una subcarpeta `specs/`,
+   y el script `db/init.sql` del repositorio en `db/init.sql` (la BD completa
+   viene dada — el agente no debe generarla).
 2. Abra SU carpeta en el IDE (en Antigravity: *Open Folder*; el agente verá
    `specs/` — no hay que subirle nada).
 3. Tenga Docker Desktop corriendo (el agente necesitará levantar PostgreSQL).
@@ -211,6 +216,8 @@ Primero lee, en este orden, los 7 documentos de la carpeta specs/:
 8_tasks. Después resume en máximo 10 líneas qué vas a construir y espera mi
 confirmación antes de tocar nada. El código va en la raíz de este proyecto
 según la estructura de 3_plan.md (specs/ es solo lectura: no la modifiques).
+La base de datos YA VIENE DADA en db/init.sql — úsala tal cual para montar
+PostgreSQL; no escribas ni modifiques SQL de creación de tablas.
 
 REGLAS (no negociables):
 
