@@ -16,6 +16,10 @@ Navegador → FRONT Flask (8000)
 > [API Genérica](api_generica/docs/spec_kit/2_spec.md) ·
 > [API Facturas](api_facturas/docs/spec_kit/2_spec.md) ·
 > [Front Flask](front_flask/docs/spec_kit/2_spec.md)
+>
+> 🔢 **Trabajo por versiones** (desarrollo incremental guiado por especificaciones):
+> [Mapa de versiones](docs/spec_kit/versiones/0_mapa_versiones.md) —
+> empezando por la [v1: api_facturas con producto + PostgreSQL](docs/spec_kit/versiones/v1_producto_postgres/2_spec.md)
 
 ---
 
@@ -39,7 +43,22 @@ docker compose up -d --build
 | **phpMyAdmin** (admin web de MariaDB) | http://localhost:8081 |
 | PostgreSQL 16 · MariaDB 11 · SQL Server 2022 | con la BD `bdfacturas` cargada |
 
-Todo el código está **comentado en español** para quien está comenzando a programar. El código se recarga solo al guardar cambios (front y APIs).
+Todo el código está **comentado en español** para quien está comenzando a programar.
+
+---
+
+## ¿Cambiaste el código? Así se actualiza Docker
+
+El código de las apps está **montado como volumen** dentro de los contenedores (el front corre con `--debug` y las APIs con `--reload`), así que **la mayoría de los cambios no requieren ningún comando**:
+
+| Qué cambiaste | Qué hay que hacer |
+|---|---|
+| Código Python o HTML (`front_flask/`, `api_generica/`, `api_facturas/`) | **Nada.** Guarda el archivo y recarga el navegador (F5) — el contenedor detecta el cambio solo. |
+| `requirements.txt` o un `Dockerfile` (p. ej. una librería nueva) | `docker compose up -d --build` (reconstruye la imagen; puedes limitarlo: `docker compose up -d --build api-facturas`) |
+| `docker-compose.yml` (puertos, variables, servicios) | `docker compose up -d` (recrea solo lo que cambió) |
+| Scripts SQL de `db/` (tablas, triggers, datos iniciales) | `docker compose down -v` y luego `docker compose up -d` — ⚠️ **borra los datos** y recarga la BD desde cero |
+
+Si un cambio no se refleja: `docker compose restart front` (o `api-generica` / `api-facturas`); en último caso, `docker compose up -d --build`.
 
 ---
 
