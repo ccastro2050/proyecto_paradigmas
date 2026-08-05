@@ -14,7 +14,7 @@
 | | **Camino A: chat web** | **Camino B: IDE agéntico** |
 |---|---|---|
 | Herramientas | Gemini, DeepSeek, ChatGPT, Claude (web) | Antigravity, Cursor, Claude Code, Copilot agente |
-| ¿Cómo conoce la spec? | Usted le **sube los 7 archivos** | El agente **lee los archivos del repo clonado** |
+| ¿Cómo conoce la spec? | Usted le **sube los 7 archivos** | El agente **lee la carpeta `specs/` de su proyecto** |
 | ¿Quién escribe los archivos? | Usted copia/pega lo que la IA propone | El agente crea y edita los archivos directamente |
 | ¿Quién ejecuta los comandos? | Usted, en un IDE (**preferible**: la terminal integrada de VS Code) o en PowerShell, y pega la salida | El agente (pidiéndole permiso); usted revisa la salida |
 | Su papel | Operador: ejecutar y reportar | Supervisor: revisar diffs y aprobar |
@@ -85,15 +85,25 @@ Empieza: resume en máximo 10 líneas qué vamos a construir (para confirmar que
 entendiste el alcance) y luego arranca con la Fase 0.
 ```
 
-### A.3 Dónde queda todo: crear el proyecto y pegar lo que la IA entrega
+### A.3 Dónde queda todo: crear SU proyecto y pegar lo que la IA entrega
 
-**El proyecto se construye DENTRO de la carpeta clonada del repositorio** —
-ahí ya están las specs, y ahí van el código y la BD. La estructura final que
-usted irá creando (es la de `3_plan.md` §2):
+**Ojo: NO se construye dentro de la carpeta clonada.** El repositorio clonado
+es el **material de referencia** — contiene la versión y sus especificaciones,
+para ver cómo se llegó a lo que existe. Su trabajo de reconstrucción va en un
+**proyecto propio, en una carpeta nueva y vacía**:
+
+1. Cree una carpeta para su proyecto (ej.: `mi_v1_producto/`) donde usted
+   guarda sus trabajos — fuera de la carpeta clonada.
+2. Ábrala en VS Code (*File → Open Folder*).
+3. Copie dentro los 7 documentos de la spec (los de la tabla A.1) a una
+   subcarpeta `specs/` — así los tiene a mano y puede subirlos al chat desde ahí.
+
+La estructura final que usted irá creando en SU carpeta (es la de
+`3_plan.md` §2):
 
 ```
-proyecto_paradigmas/              ← la carpeta que clonó (ábrala en VS Code: File → Open Folder)
-├── docs/                         ← ya existe (las specs — no se toca)
+mi_v1_producto/                   ← SU carpeta (nueva, vacía al empezar)
+├── specs/                        ← copia de los 7 documentos (solo lectura)
 ├── db/
 │   └── init.sql                  ← Fase 0: el SQL de 5_data_model.md §2
 ├── .venv/                        ← Fase 0: el entorno virtual (lo crea un comando)
@@ -134,8 +144,8 @@ esto?". Y si le dice "modifica la línea X", pídale mejor el archivo completo
 actualizado — copiar archivos enteros evita errores de edición manual.
 
 **Dónde parar la terminal:** los comandos de Docker y `pip` se corren desde la
-raíz (`proyecto_paradigmas/`); `uvicorn main:app --port 8002 --reload` se
-corre desde `api_facturas/` (donde vive `main.py`):
+raíz de SU carpeta (`mi_v1_producto/`); `uvicorn main:app --port 8002 --reload`
+se corre desde `api_facturas/` (donde vive `main.py`):
 
 ```powershell
 cd api_facturas
@@ -179,11 +189,16 @@ comandos en la terminal (pidiendo permiso). Usted pasa de operador a
 
 ### B.1 Preparación
 
-1. Clone el repositorio y ábralo como carpeta del proyecto en el IDE
-   (en Antigravity: *Open Folder* sobre la carpeta clonada; el agente ya ve
-   `docs/spec_kit/` — no hay que subirle nada).
-2. Tenga Docker Desktop corriendo (el agente necesitará levantar PostgreSQL).
-3. Active el modo agente (en Antigravity, el *Agent Manager*; en otros IDE,
+**Igual que en el chat: NO se trabaja dentro de la carpeta clonada** (esa es
+la referencia). El agente construye en SU proyecto:
+
+1. Cree una carpeta nueva y vacía para su proyecto (ej.: `mi_v1_producto/`) y
+   copie dentro, en una subcarpeta `specs/`, los 7 documentos de la tabla A.1
+   (desde la carpeta clonada o desde GitHub).
+2. Abra SU carpeta en el IDE (en Antigravity: *Open Folder*; el agente verá
+   `specs/` — no hay que subirle nada).
+3. Tenga Docker Desktop corriendo (el agente necesitará levantar PostgreSQL).
+4. Active el modo agente (en Antigravity, el *Agent Manager*; en otros IDE,
    el chat en modo "agent").
 
 ### B.2 El prompt para el agente (cópielo tal cual)
@@ -191,10 +206,11 @@ comandos en la terminal (pidiendo permiso). Usted pasa de operador a
 ```
 Construye la VERSIÓN 1 de este proyecto, partiendo de cero.
 
-Primero lee, en este orden: docs/spec_kit/1_constitution.md y los seis
-documentos de docs/spec_kit/versiones/v1_producto_postgres/ (2_spec, 3_plan,
-5_data_model, 6_contracts, 7_quickstart, 8_tasks). Después resume en máximo
-10 líneas qué vas a construir y espera mi confirmación antes de tocar nada.
+Primero lee, en este orden, los 7 documentos de la carpeta specs/:
+1_constitution, 2_spec, 3_plan, 5_data_model, 6_contracts, 7_quickstart y
+8_tasks. Después resume en máximo 10 líneas qué vas a construir y espera mi
+confirmación antes de tocar nada. El código va en la raíz de este proyecto
+según la estructura de 3_plan.md (specs/ es solo lectura: no la modifiques).
 
 REGLAS (no negociables):
 

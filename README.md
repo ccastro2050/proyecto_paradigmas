@@ -61,13 +61,21 @@ este proyecto y referencias:
 - Saber que la especificación manda: si el código hace algo que la spec no
   dice, se corrige el código o se corrige la spec — nunca se dejan divergir.
 
-## Puesta en marcha de la v1 (resumen)
+## Puesta en marcha (resumen)
 
 ```powershell
+# 1. Obtener el material de referencia (la versión y sus especificaciones)
 git clone https://github.com/ccastro2050/proyecto_paradigmas.git
-cd proyecto_paradigmas
-# seguir docs/spec_kit/versiones/v1_producto_postgres/8_tasks.md fase por fase
+
+# 2. Crear SU carpeta de trabajo (la reconstrucción NO se hace dentro del clon)
+mkdir mi_v1_producto
+# copiar allí los 7 documentos de la spec (subcarpeta specs/) y seguir la
+# guía: docs/GUIA_IA.md — fase por fase según 8_tasks.md
 ```
+
+El repositorio clonado muestra **cómo se llegó a la versión actual**; su
+trabajo es **reconstruirla desde cero en su propio proyecto**, guiado por las
+especificaciones (con o sin IA).
 
 ---
 
