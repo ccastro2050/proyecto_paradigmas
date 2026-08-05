@@ -16,7 +16,7 @@
 | Herramientas | Gemini, DeepSeek, ChatGPT, Claude (web) | Antigravity, Cursor, Claude Code, Copilot agente |
 | ¿Cómo conoce la spec? | Usted le **sube los 7 archivos** | El agente **lee los archivos del repo clonado** |
 | ¿Quién escribe los archivos? | Usted copia/pega lo que la IA propone | El agente crea y edita los archivos directamente |
-| ¿Quién ejecuta los comandos? | Usted, en PowerShell, y pega la salida | El agente (pidiéndole permiso); usted revisa la salida |
+| ¿Quién ejecuta los comandos? | Usted, en un IDE (**preferible**: la terminal integrada de VS Code) o en PowerShell, y pega la salida | El agente (pidiéndole permiso); usted revisa la salida |
 | Su papel | Operador: ejecutar y reportar | Supervisor: revisar diffs y aprobar |
 | Riesgo típico | La IA "olvida" el contexto en chats largos | El agente se embala y hace de más sin que usted lo note |
 
@@ -74,8 +74,9 @@ REGLAS DE TRABAJO (no negociables):
    mismos verbos, mismas rutas, mismos códigos de estado, mismos formatos de
    respuesta (incluido el contraste PUT=reemplazo completo vs PATCH=parcial).
 5. Todo en español: nombres, comentarios, docstrings y mensajes.
-6. Yo trabajo en Windows con PowerShell, VS Code, Python 3.12 y Docker
-   Desktop. Dame los comandos para ese entorno.
+6. Yo trabajo en Windows con un IDE (VS Code, usando su terminal integrada
+   de PowerShell), Python 3.12 y Docker Desktop. Dame los comandos para ese
+   entorno.
 
 Al final, la versión 1 está TERMINADA solo cuando pasan los 6 criterios de
 aceptación de 2_spec.md, verificados con el smoke test de 7_quickstart.md.
@@ -87,8 +88,10 @@ entendiste el alcance) y luego arranca con la Fase 0.
 ### A.3 El método de la conversación
 
 1. **La IA propone, usted ejecuta.** Copie cada archivo a la ruta exacta en
-   VS Code; corra el comando de verificación en PowerShell; pegue la salida
-   REAL en el chat (completa, con el error si lo hay).
+   su IDE; corra el comando de verificación en la **terminal integrada del
+   IDE** (preferible — VS Code: menú *Terminal → New Terminal*) o en una
+   ventana de PowerShell; pegue la salida REAL en el chat (completa, con el
+   error si lo hay).
 2. **Una fase a la vez.** Si la IA se embala y entrega tres fases juntas,
    recuérdele la regla 2d: "detente, vamos fase por fase".
 3. **Si el chat pierde el contexto** (conversaciones largas): abra un chat
