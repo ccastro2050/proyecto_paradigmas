@@ -25,21 +25,30 @@ uvicorn main:app --port 8002 --reload
 curl http://localhost:8002/                      # {"mensaje":"API Facturas funcionando","version":"v1",...}
 # abrir http://localhost:8002/docs en el navegador
 
-# 2. Listar — los 8 productos de ejemplo
-curl http://localhost:8002/api/producto
+# 2. Listar — los 8 productos, y el query string en acción
+curl http://localhost:8002/api/producto                      # total: 8
+curl "http://localhost:8002/api/producto?limite=3"           # total: 3
 
-# 3. Obtener uno / inexistente
+# 3. Obtener uno / inexistente (parámetro de ruta)
 curl http://localhost:8002/api/producto/PR001    # 200 Laptop Lenovo
 curl -i http://localhost:8002/api/producto/PR999 # 404
 
-# 4. Ciclo CRUD completo
+# 4. Ciclo con los 5 verbos
 curl -X POST http://localhost:8002/api/producto -H "Content-Type: application/json" `
      -d '{\"codigo\":\"PR009\",\"nombre\":\"Webcam Logitech\",\"stock\":5,\"valorunitario\":120000}'
 curl -X PUT  http://localhost:8002/api/producto/PR009 -H "Content-Type: application/json" `
-     -d '{\"stock\":7}'
-curl http://localhost:8002/api/producto/PR009    # stock = 7
+     -d '{\"nombre\":\"Webcam Logitech C920\",\"stock\":10,\"valorunitario\":150000}'   # reemplazo COMPLETO
+curl -X PATCH http://localhost:8002/api/producto/PR009 -H "Content-Type: application/json" `
+     -d '{\"stock\":7}'                                       # parcial: solo el stock
+curl http://localhost:8002/api/producto/PR009    # nombre C920, stock = 7
 curl -X DELETE http://localhost:8002/api/producto/PR009
 curl -i -X DELETE http://localhost:8002/api/producto/PR009   # 404 (ya no existe)
+
+# 4b. La diferencia PUT vs PATCH — el MISMO body, distinto veredicto
+curl -i -X PUT   http://localhost:8002/api/producto/PR001 -H "Content-Type: application/json" `
+     -d '{\"stock\":99}'    # 422: a PUT le faltan nombre y valorunitario
+curl -i -X PATCH http://localhost:8002/api/producto/PR001 -H "Content-Type: application/json" `
+     -d '{\"stock\":17}'    # 200: PATCH acepta el subconjunto
 
 # 5. Pydantic como frontera — nunca llega a la BD
 curl -i -X POST http://localhost:8002/api/producto -H "Content-Type: application/json" `

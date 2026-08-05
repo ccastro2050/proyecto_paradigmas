@@ -20,18 +20,20 @@
 **Verificar:** `python -c "import fastapi, sqlalchemy, asyncpg"` no falla, y un
 cliente SQL ve la tabla `producto` con 8 filas.
 
-## Fase 1 — Modelo Pydantic
-- [ ] `models/producto.py`: `Producto` (todos obligatorios, `stock ≥ 0`,
-      `valorunitario ≥ 0`) y `ProductoActualizar` (todos opcionales, mismas
-      restricciones) — según [3_plan.md](3_plan.md) §4.2.
+## Fase 1 — Modelos Pydantic (uno por semántica HTTP)
+- [ ] `models/producto.py`: `Producto` (POST, todos obligatorios),
+      `ProductoReemplazo` (PUT, obligatorios sin código) y
+      `ProductoActualizar` (PATCH, todos opcionales) —
+      según [3_plan.md](3_plan.md) §4.2.
 
 **Verificar:** en un REPL, `Producto(codigo="X", nombre="Y", stock=-1,
-valorunitario=1)` lanza `ValidationError`.
+valorunitario=1)` lanza `ValidationError`, y `ProductoActualizar(stock=7)`
+es válido.
 
 ## Fase 2 — Contratos (interfaces)
 - [ ] `repositorios/abstracciones/i_repositorio_producto.py`: Protocol con los
-      5 métodos async (`obtener_todos`, `obtener_por_codigo`, `crear`,
-      `actualizar`, `eliminar`).
+      5 métodos async (`obtener_todos(limite)`, `obtener_por_codigo`, `crear`,
+      `actualizar` — lo usan PUT y PATCH — y `eliminar`).
 - [ ] `servicios/abstracciones/i_servicio_producto.py`: Protocol del servicio.
 
 **Verificar:** los archivos importan sin errores (son solo contratos).
@@ -57,15 +59,19 @@ dict) y hace crear/listar/eliminar SIN PostgreSQL corriendo. Si esto funciona,
 las capas quedaron bien.
 
 ## Fase 5 — Controller y aplicación
-- [ ] `controllers/producto_controller.py`: los 5 endpoints de
-      [6_contracts.md](6_contracts.md) con la traducción de excepciones de
-      [3_plan.md](3_plan.md) §4.5 (ValueError→400, LookupError→404, resto→500)
-      y el 204 para lista vacía.
+- [ ] `controllers/producto_controller.py`: los 6 endpoints de producto de
+      [6_contracts.md](6_contracts.md) — GET listar (con query `limite`),
+      GET por código, POST, **PUT (reemplazo completo)**, **PATCH (parcial)**
+      y DELETE — con la traducción de excepciones de [3_plan.md](3_plan.md)
+      §4.5 (ValueError→400, LookupError→404, resto→500) y el 204 para lista
+      vacía.
 - [ ] `main.py`: app FastAPI (`title="API Facturas"`, `version="v1"`),
       `include_router(prefix="/api")`, endpoint `/` de diagnóstico.
 
 **Verificar:** `uvicorn main:app --port 8002 --reload` y en `/docs` probar:
-listar (200 con 8), obtener PR001 (200), PR999 (404), POST inválido (422).
+listar (200 con 8 y `?limite=3` con 3), obtener PR001 (200), PR999 (404),
+POST inválido (422), y el contraste PUT vs PATCH con `{"stock": 7}`
+(422 vs 200).
 
 ## Fase 6 — Cierre de la versión
 - [ ] Correr el smoke test completo de [7_quickstart.md](7_quickstart.md) §3 —

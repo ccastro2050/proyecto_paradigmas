@@ -23,9 +23,9 @@
 api_facturas/
 ├── main.py                       # crea FastAPI, registra router, endpoint /
 ├── models/
-│   └── producto.py               # Pydantic: Producto y ProductoActualizar
+│   └── producto.py               # Pydantic: Producto, ProductoReemplazo y ProductoActualizar
 ├── controllers/
-│   └── producto_controller.py    # los 5 endpoints HTTP (router prefix="/api")
+│   └── producto_controller.py    # los 6 endpoints de producto (router prefix="/api")
 ├── servicios/
 │   ├── abstracciones/
 │   │   └── i_servicio_producto.py    # Protocol del servicio
@@ -57,25 +57,34 @@ Solo `ensamblador.py` conoce la clase concreta.
 ## 4. Decisiones de diseño clave
 
 ### 4.1 Interfaces con `typing.Protocol` desde v1
-`IRepositorioProducto` define los 5 métodos async
-(`obtener_todos`, `obtener_por_codigo`, `crear`, `actualizar`, `eliminar`).
+`IRepositorioProducto` define los 5 métodos async:
+`obtener_todos(limite)`, `obtener_por_codigo`, `crear`, `actualizar` (lo usan
+PUT y PATCH — recibe el dict de campos a escribir) y `eliminar`.
 El servicio recibe **la interfaz** por constructor. Esto es lo que compra la
 v3: un segundo motor será solo otra clase que cumpla el mismo Protocol.
 
-### 4.2 Pydantic como frontera de entrada
+### 4.2 Pydantic como frontera de entrada (un modelo por semántica HTTP)
 ```python
-class Producto(BaseModel):
+class Producto(BaseModel):             # POST: el recurso completo, con su código
     codigo: str = Field(min_length=1, max_length=20)
     nombre: str = Field(min_length=1)
     stock: int = Field(ge=0)
     valorunitario: Decimal = Field(ge=0)
 
-class ProductoActualizar(BaseModel):   # PUT parcial: todos opcionales
-    nombre: str | None = None
+class ProductoReemplazo(BaseModel):    # PUT: reemplazo completo (el código va en la URL)
+    nombre: str = Field(min_length=1)
+    stock: int = Field(ge=0)
+    valorunitario: Decimal = Field(ge=0)
+
+class ProductoActualizar(BaseModel):   # PATCH: parcial, todos opcionales
+    nombre: str | None = Field(default=None, min_length=1)
     stock: int | None = Field(default=None, ge=0)
     valorunitario: Decimal | None = Field(default=None, ge=0)
 ```
-Un body inválido muere en 422 **antes** de tocar servicio o BD.
+Un body inválido muere en 422 **antes** de tocar servicio o BD. Los tres
+modelos materializan la semántica de cada verbo: POST trae todo, PUT exige
+todo, PATCH acepta cualquier subconjunto (pero no vacío — eso lo valida el
+servicio con 400).
 
 ### 4.3 `ensamblador.py`: la proto-fábrica honesta
 ```python
@@ -92,10 +101,10 @@ fábrica real — controllers y servicios no se tocan (ese es el examen de la v3
 — esta API es por-entidad, no genérica):
 
 ```sql
-SELECT codigo, nombre, stock, valorunitario FROM producto ORDER BY codigo
+SELECT codigo, nombre, stock, valorunitario FROM producto ORDER BY codigo LIMIT :limite
 SELECT … WHERE codigo = :codigo
 INSERT INTO producto (codigo, nombre, stock, valorunitario) VALUES (:codigo, :nombre, :stock, :valorunitario)
-UPDATE producto SET … WHERE codigo = :codigo      -- solo los campos enviados
+UPDATE producto SET … WHERE codigo = :codigo      -- los campos que lleguen (PUT: los 3; PATCH: los enviados)
 DELETE FROM producto WHERE codigo = :codigo
 ```
 Engine async creado perezosamente y reutilizado por instancia.
