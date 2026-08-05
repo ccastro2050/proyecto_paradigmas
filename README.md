@@ -121,6 +121,7 @@ aceptación (se cierra con tag). Detalle completo:
 | [SOLID y programación por capas](docs/SOLID_Y_CAPAS.md) | Los 5 principios y las capas — y en qué versión se demuestra cada uno |
 | [Principios ACID](docs/PRINCIPIOS_ACID.md) | Las 4 garantías transaccionales, por qué una facturación las exige, y el contraste con BASE |
 | [Conceptos de Docker](docs/CONCEPTOS_DOCKER.md) | Imagen, contenedor, volumen, compose (con el `docker-compose.yml` del proyecto explicado línea por línea) y por qué NO se necesita Kubernetes |
+| [Tutorial pgAdmin](docs/TUTORIAL_PGADMIN.md) | Administrar la BD paso a paso: conectarse, explorar, editar datos (y verlos cambiar en la API), Query Tool y ERD |
 
 ---
 
