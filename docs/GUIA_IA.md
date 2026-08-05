@@ -85,7 +85,76 @@ Empieza: resume en máximo 10 líneas qué vamos a construir (para confirmar que
 entendiste el alcance) y luego arranca con la Fase 0.
 ```
 
-### A.3 El método de la conversación
+### A.3 Dónde queda todo: crear el proyecto y pegar lo que la IA entrega
+
+**El proyecto se construye DENTRO de la carpeta clonada del repositorio** —
+ahí ya están las specs, y ahí van el código y la BD. La estructura final que
+usted irá creando (es la de `3_plan.md` §2):
+
+```
+proyecto_paradigmas/              ← la carpeta que clonó (ábrala en VS Code: File → Open Folder)
+├── docs/                         ← ya existe (las specs — no se toca)
+├── db/
+│   └── init.sql                  ← Fase 0: el SQL de 5_data_model.md §2
+├── .venv/                        ← Fase 0: el entorno virtual (lo crea un comando)
+└── api_facturas/                 ← TODO el código va aquí adentro
+    ├── requirements.txt          ← Fase 0
+    ├── main.py                   ← Fase 5
+    ├── models/
+    │   └── producto.py           ← Fase 1
+    ├── controllers/
+    │   └── producto_controller.py     ← Fase 5
+    ├── servicios/
+    │   ├── abstracciones/
+    │   │   └── i_servicio_producto.py ← Fase 2
+    │   ├── servicio_producto.py       ← Fase 4
+    │   └── ensamblador.py             ← Fase 4
+    └── repositorios/
+        ├── abstracciones/
+        │   └── i_repositorio_producto.py  ← Fase 2
+        └── repositorio_producto_postgresql.py  ← Fase 3
+```
+
+**Cómo crear un archivo donde la IA diga** (VS Code): en el explorador
+(panel izquierdo), clic en el ícono *New File* y escriba la **ruta completa**,
+por ejemplo `api_facturas/models/producto.py` — VS Code crea las carpetas
+intermedias solas. Pegue el contenido que entregó la IA y guarde (`Ctrl+S`).
+
+**Qué le entrega la IA y qué hace usted con eso** — en cada fase la IA
+entrega tres tipos de cosas:
+
+| La IA le entrega | Usted lo pone en |
+|---|---|
+| Un bloque de código con su ruta (ej.: "Archivo: `api_facturas/models/producto.py`") | Ese archivo, en ESA ruta exacta — un bloque = un archivo completo (reemplaza todo el contenido, no "agregue al final") |
+| Un bloque SQL | `db/init.sql` (solo en la Fase 0) |
+| Comandos (docker run, pip install, uvicorn, curl) | La terminal integrada del IDE, parado en la carpeta correcta (ver abajo) |
+
+Si un bloque llega **sin ruta**, no adivine: pregúntele "¿en qué archivo va
+esto?". Y si le dice "modifica la línea X", pídale mejor el archivo completo
+actualizado — copiar archivos enteros evita errores de edición manual.
+
+**Dónde parar la terminal:** los comandos de Docker y `pip` se corren desde la
+raíz (`proyecto_paradigmas/`); `uvicorn main:app --port 8002 --reload` se
+corre desde `api_facturas/` (donde vive `main.py`):
+
+```powershell
+cd api_facturas
+uvicorn main:app --port 8002 --reload
+```
+
+**El entorno virtual (Fase 0), por si la IA no lo detalla:**
+
+```powershell
+# desde la raíz del proyecto
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1        # el prompt cambia a (.venv)
+pip install -r api_facturas/requirements.txt
+```
+
+> Nota: `.venv/`, `__pycache__/` y demás basura de ejecución no se suben a
+> git — la Fase 6 crea el `.gitignore` que los excluye.
+
+### A.4 El método de la conversación
 
 1. **La IA propone, usted ejecuta.** Copie cada archivo a la ruta exacta en
    su IDE; corra el comando de verificación en la **terminal integrada del
