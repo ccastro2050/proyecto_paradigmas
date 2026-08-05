@@ -36,6 +36,18 @@ v6  frontend Flask
    aceptación. Se cierra con commit + tag (`v1`), y solo entonces aparece la
    spec de la siguiente.
 
+## Material conceptual del curso
+
+Cuatro documentos cortos con conceptos, justificación, ejemplos amarrados a
+este proyecto y referencias:
+
+| Documento | Qué cubre |
+|---|---|
+| [SDD y Spec Kit](docs/SDD_SPECKIT.md) | La metodología con la que se trabaja este curso: la spec manda sobre el código |
+| [El paradigma P.O.O.](docs/PARADIGMA_POO.md) | Qué es un paradigma, los 4 pilares, y la P.O.O. de Python (`Protocol`, duck typing) en la v1 |
+| [SOLID y programación por capas](docs/SOLID_Y_CAPAS.md) | Los 5 principios y las capas — y en qué versión se demuestra cada uno |
+| [Principios ACID](docs/PRINCIPIOS_ACID.md) | Las 4 garantías transaccionales, por qué una facturación las exige, y el contraste con BASE |
+
 ## Qué se necesita
 
 - **Docker Desktop** (para PostgreSQL; la API corre local en v1).
