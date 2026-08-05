@@ -1,5 +1,0 @@
-"""Repositorios especificos de productosporfactura."""
-
-from .repositorio_productosporfactura_postgresql import RepositorioProductosPorFacturaPostgreSQL
-from .repositorio_productosporfactura_sqlserver import RepositorioProductosPorFacturaSqlServer
-from .repositorio_productosporfactura_mysql_mariadb import RepositorioProductosPorFacturaMysqlMariaDB

@@ -9,8 +9,8 @@
 >
 > Regla de avance: una versión está TERMINADA cuando pasa todos los criterios
 > de aceptación de su `2_spec.md`. Solo entonces se escribe (o se aborda) la
-> spec de la siguiente. Los spec kits completos de cada componente describen la
-> **visión final** a la que estas versiones convergen.
+> spec de la siguiente. En la rama `main` solo vive la versión en curso; el
+> sistema completo de referencia se conserva en la rama `sistema-completo`.
 
 ---
 
