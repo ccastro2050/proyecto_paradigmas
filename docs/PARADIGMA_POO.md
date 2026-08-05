@@ -67,7 +67,51 @@ class IRepositorioProducto(Protocol):
 Compárelo con `interface` de Java/C#: mismo propósito, pero sin obligar a
 `implements` — cumplir el contrato basta (tipado estructural, no nominal).
 
-## 4. Justificación: por qué P.O.O. para este proyecto
+## 4. Pydantic: clases que validan datos (P.O.O. + declarativo)
+
+**Pydantic** es la librería de validación de datos de Python (la que usa
+FastAPI por debajo). Su idea: en lugar de escribir `if` tras `if` para validar
+un JSON de entrada, se **declara una clase** que describe la FORMA correcta de
+los datos — tipos, obligatoriedad y restricciones — y Pydantic valida
+automáticamente al construir el objeto:
+
+```python
+from pydantic import BaseModel, Field
+from decimal import Decimal
+
+class Producto(BaseModel):
+    codigo: str = Field(min_length=1, max_length=20)
+    nombre: str = Field(min_length=1)
+    stock: int = Field(ge=0)                 # ge = greater or equal: stock >= 0
+    valorunitario: Decimal = Field(ge=0)
+
+Producto(codigo="PR009", nombre="Webcam", stock=5, valorunitario=120000)  # ✔ objeto válido
+Producto(codigo="PR009", nombre="Webcam", stock=-5, valorunitario=1)      # ✖ ValidationError
+```
+
+Mírelo con lentes de paradigma — Pydantic es dos paradigmas cooperando:
+
+- Es **P.O.O.**: `Producto` es una clase; cada petición válida se convierte en
+  un objeto con sus datos encapsulados y tipados.
+- Es **declarativa**: usted escribe QUÉ forma tienen los datos (`stock: int,
+  ge=0`), no CÓMO validarlos — cero `if`, cero mensajes de error a mano.
+  Compare con la versión imperativa: ~15 líneas de `if not isinstance(...)…`
+  por campo.
+
+**Qué gana el proyecto con esto (en la v1):**
+
+1. **Frontera de entrada:** FastAPI recibe el body JSON, intenta construir el
+   modelo, y si falla responde **422 automáticamente** con el detalle exacto
+   de qué campo violó qué regla — el dato inválido nunca llega al servicio ni
+   a la BD.
+2. **Un modelo por semántica HTTP:** `Producto` (POST: todo obligatorio),
+   `ProductoReemplazo` (PUT: reemplazo completo) y `ProductoActualizar`
+   (PATCH: todos opcionales) — la diferencia entre los verbos queda escrita
+   en tipos, no en comentarios.
+3. **Documentación gratis:** Swagger (`/docs`) muestra los esquemas y ejemplos
+   generados desde estos mismos modelos — el modelo ES el contrato publicado.
+
+## 5. Justificación: por qué P.O.O. para este proyecto
 
 1. **El dominio se modela solo:** producto, factura, cliente… son objetos
    naturales con datos y reglas propias.
@@ -81,7 +125,7 @@ Compárelo con `interface` de Java/C#: mismo propósito, pero sin obligar a
    [SOLID_Y_CAPAS.md](SOLID_Y_CAPAS.md)) son reglas de diseño **dentro** del
    paradigma orientado a objetos — sin P.O.O. no hay SOLID que aplicar.
 
-## 5. Ejemplo resumido: la v1 vista con lentes de P.O.O.
+## 6. Ejemplo resumido: la v1 vista con lentes de P.O.O.
 
 ```
 Producto (Pydantic)          ← objeto de DATOS con validación (abstracción del dominio)
@@ -95,18 +139,22 @@ El mismo `ServicioProducto` funciona con ambos repositorios sin cambiar una
 línea — eso es el paradigma haciendo su trabajo. En la v3, un tercer objeto
 (`RepositorioProductoMysqlMariaDB`) entrará por la misma puerta.
 
-## 6. Referencias
+## 7. Referencias
 
 1. Python — Tutorial oficial de clases:
    <https://docs.python.org/es/3/tutorial/classes.html>
 2. PEP 544 — *Protocols: Structural subtyping (static duck typing)*:
    <https://peps.python.org/pep-0544/>
-3. Refactoring Guru (es) — catálogo de patrones de diseño orientados a objetos:
+3. Pydantic — documentación oficial (modelos, `Field`, validación):
+   <https://docs.pydantic.dev/latest/>
+4. FastAPI — *Request Body* (cómo integra los modelos Pydantic y el 422):
+   <https://fastapi.tiangolo.com/es/tutorial/body/>
+5. Refactoring Guru (es) — catálogo de patrones de diseño orientados a objetos:
    <https://refactoring.guru/es/design-patterns>
-4. Gamma, Helm, Johnson, Vlissides — *Design Patterns* (GoF, 1994): el origen
+6. Gamma, Helm, Johnson, Vlissides — *Design Patterns* (GoF, 1994): el origen
    de "composición sobre herencia" y "programar contra interfaces".
-5. Alan Kay (creador del término "object-oriented", Smalltalk): la idea
+7. Alan Kay (creador del término "object-oriented", Smalltalk): la idea
    original era **objetos que se comunican por mensajes** — más cercana a
    "servicios que colaboran" que a "árboles de herencia".
-6. En este repositorio: las interfaces y capas de la
+8. En este repositorio: las interfaces y capas de la
    [v1](spec_kit/versiones/v1_producto_postgres/3_plan.md).
