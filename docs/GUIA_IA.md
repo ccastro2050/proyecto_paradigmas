@@ -108,10 +108,12 @@ La estructura final que usted irá creando en SU carpeta (es la de
 ```
 mi_v1_producto/                   ← SU carpeta (nueva, vacía al empezar)
 ├── specs/                        ← copia de los 7 documentos (solo lectura)
+├── docker-compose.yml            ← Fase 0 (servicio postgres) y Fase 6 (servicio api-facturas)
 ├── db/
 │   └── init.sql                  ← Fase 0: COPIADO del repo (la BD completa; no lo genera la IA)
-├── .venv/                        ← Fase 0: el entorno virtual (lo crea un comando)
+├── .venv/                        ← Fase 0: el entorno virtual (para desarrollar fase a fase)
 └── api_facturas/                 ← TODO el código va aquí adentro
+    ├── Dockerfile                ← Fase 6 (para el "un solo comando" final)
     ├── requirements.txt          ← Fase 0
     ├── main.py                   ← Fase 5
     ├── models/

@@ -37,15 +37,18 @@ frontend (v6) **sin reescribir lo construido**.
 - Validación **Pydantic** de la entidad (tipos, obligatorios, no-negativos).
 - Capas con interfaces: `IRepositorioProducto` (Protocol) implementada por
   `RepositorioProductoPostgreSQL`; el servicio depende de la interfaz.
-- Configuración por variable de entorno (`DB_POSTGRES`); PostgreSQL en Docker.
+- Configuración por variable de entorno (`DB_POSTGRES`).
+- **Un solo comando** (Artículo 4 de la constitución): `docker-compose.yml`
+  mínimo — PostgreSQL + la API con su `Dockerfile` — de modo que
+  `docker compose up -d --build` deja todo funcionando.
 - Swagger automático (`/docs`) y endpoint `/` de diagnóstico.
 
 **No incluye (y es deliberado — ver [mapa de versiones](../0_mapa_versiones.md)):**
 - **Ningún frontend** (llega en v6) y **ninguna API genérica** (llega en v5).
 - Endpoints para otras entidades (v2) — las otras 11 tablas EXISTEN en la BD,
   pero el código de la v1 solo puede nombrar `producto`.
-- Otros motores y la fábrica `DB_PROVIDER` (v3, v4) · docker compose e imagen
-  propia de la API (v4).
+- Otros motores y la fábrica `DB_PROVIDER` (v3, v4). El `docker-compose.yml`
+  existe desde v1 pero MÍNIMO (2 servicios): crecerá con cada versión.
 - Autenticación y uso del trigger/SPs de facturación (los aprovechará la v2).
 
 ## 3. Requisitos funcionales
@@ -100,10 +103,11 @@ inexistente → 404.
 
 ## 5. Criterios de aceptación
 
-1. PostgreSQL arranca con el `db/init.sql` provisto (la BD completa: 12
-   tablas — ver [5_data_model.md](5_data_model.md)) y
-   `uvicorn main:app --port 8002` levanta la API; `GET /` responde el JSON
-   de diagnóstico y `/docs` abre Swagger.
+1. **`docker compose up -d --build` — un solo comando —** deja corriendo la
+   BD (creada con el `db/init.sql` provisto: 12 tablas, ver
+   [5_data_model.md](5_data_model.md)) y la API; `GET /` responde el JSON de
+   diagnóstico y `/docs` abre Swagger. Guardar un `.py` recarga la API sola
+   (código montado como volumen + `--reload`).
 2. `GET /api/producto` devuelve los 8 productos de ejemplo con
    `{tabla:"producto", total:8, datos:[…]}`, y `GET /api/producto?limite=3`
    devuelve exactamente 3.

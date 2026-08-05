@@ -20,21 +20,27 @@
 ## 2. Estructura de carpetas (subconjunto exacto de la final)
 
 ```
-api_facturas/
-├── main.py                       # crea FastAPI, registra router, endpoint /
-├── models/
-│   └── producto.py               # Pydantic: Producto, ProductoReemplazo y ProductoActualizar
-├── controllers/
-│   └── producto_controller.py    # los 6 endpoints de producto (router prefix="/api")
-├── servicios/
-│   ├── abstracciones/
-│   │   └── i_servicio_producto.py    # Protocol del servicio
-│   ├── servicio_producto.py          # reglas de negocio; recibe IRepositorioProducto
-│   └── ensamblador.py                # crear_servicio_producto() — proto-fábrica (ver §4.3)
-└── repositorios/
-    ├── abstracciones/
-    │   └── i_repositorio_producto.py # Protocol: 5 métodos async
-    └── repositorio_producto_postgresql.py
+(raíz del proyecto)
+├── docker-compose.yml                # UN comando: postgres + api-facturas (crece por versiones)
+├── db/
+│   └── init.sql                      # la BD completa, PROVISTA (se copia, no se genera)
+└── api_facturas/
+    ├── Dockerfile                    # python:3.12-slim + requirements (el compose lo construye)
+    ├── requirements.txt
+    ├── main.py                       # crea FastAPI, registra router, endpoint /
+    ├── models/
+    │   └── producto.py               # Pydantic: Producto, ProductoReemplazo y ProductoActualizar
+    ├── controllers/
+    │   └── producto_controller.py    # los 6 endpoints de producto (router prefix="/api")
+    ├── servicios/
+    │   ├── abstracciones/
+    │   │   └── i_servicio_producto.py    # Protocol del servicio
+    │   ├── servicio_producto.py          # reglas de negocio; recibe IRepositorioProducto
+    │   └── ensamblador.py                # crear_servicio_producto() — proto-fábrica (ver §4.3)
+    └── repositorios/
+        ├── abstracciones/
+        │   └── i_repositorio_producto.py # Protocol: 5 métodos async
+        └── repositorio_producto_postgresql.py
 ```
 
 Las carpetas y nombres coinciden con la visión final: cuando v2 agregue
@@ -125,12 +131,29 @@ app = FastAPI(title="API Facturas", version="v1")   # /docs y /redoc por defecto
 app.include_router(router_producto, prefix="/api", tags=["Producto"])
 ```
 
-## 5. Base de datos en v1
+## 5. Docker: un solo comando desde v1
 
-PostgreSQL 16 en un contenedor con el `init.sql` de
-[5_data_model.md](5_data_model.md) (SOLO la tabla `producto` + 8 filas).
-Sin Dockerfile propio ni compose en v1 — la API corre con `uvicorn` local
-(la contenedorización completa es alcance de la v4).
+La constitución (Artículo 4) manda: `docker compose up -d --build` deja TODO
+funcionando. En v1 eso son **dos servicios**:
+
+```yaml
+services:
+  postgres:            # postgres:16-alpine + db/init.sql (la BD completa)
+    # volumen pgdata (persistencia) · puerto 15432 al host · healthcheck pg_isready
+  api-facturas:        # build: ./api_facturas (su Dockerfile)
+    # código montado como volumen + uvicorn --reload → guardar recarga solo
+    # DB_POSTGRES apunta al host interno "postgres:5432" (nombre del servicio)
+    # depends_on: postgres con condition: service_healthy
+volumes:
+  pgdata:
+```
+
+`api_facturas/Dockerfile`: `python:3.12-slim` → copiar `requirements.txt` +
+`pip install` (capa cacheada) → copiar el código → `CMD uvicorn`.
+
+**Durante la construcción fase a fase** también se puede correr la API local
+(venv + `uvicorn --reload` con `DB_POSTGRES` hacia `localhost:15432`) — es la
+misma API; el compose es la forma oficial de entrega.
 
 ## 6. Convenciones
 

@@ -46,19 +46,22 @@ mostrará el 500 con el error del motor — integridad referencial en acción).
 
 ## 3. Montar la BD para la v1
 
+La BD es el servicio `postgres` del `docker-compose.yml` del proyecto
+(ver [3_plan.md](3_plan.md) §5). Para levantarla sola durante las primeras
+fases de construcción:
+
 ```powershell
-# desde la raíz del proyecto (db/init.sql ya está en el repo):
-docker run -d --name bd_v1 -p 15432:5432 `
-  -e POSTGRES_DB=bdfacturas_postgres_local `
-  -e POSTGRES_USER=paradigmas -e POSTGRES_PASSWORD=paradigmas123 `
-  -v ${PWD}/db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro `
-  postgres:16-alpine
+docker compose up -d postgres      # desde la raíz del proyecto
 ```
 
-Cadena de conexión para la API (variable de entorno):
+Cadenas de conexión para la API (variable de entorno `DB_POSTGRES`):
 
 ```
-DB_POSTGRES=postgresql+asyncpg://paradigmas:paradigmas123@localhost:15432/bdfacturas_postgres_local
+# API corriendo LOCAL (venv + uvicorn), la BD publica el puerto 15432 al host:
+postgresql+asyncpg://paradigmas:paradigmas123@localhost:15432/bdfacturas_postgres_local
+
+# API corriendo EN el compose (la inyecta el docker-compose.yml, host interno):
+postgresql+asyncpg://paradigmas:paradigmas123@postgres:5432/bdfacturas_postgres_local
 ```
 
 Verificación: un cliente SQL debe ver **12 tablas** y `SELECT count(*) FROM

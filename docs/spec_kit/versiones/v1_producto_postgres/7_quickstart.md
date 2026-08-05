@@ -5,16 +5,21 @@
 
 ---
 
-## 1. Base de datos
-
-Montar PostgreSQL con el `init.sql` de la v1 —
-receta exacta en [5_data_model.md](5_data_model.md) §3.
-
-## 2. Arrancar la API
+## 1. Arrancar TODO (un solo comando)
 
 ```powershell
-# desde la carpeta del proyecto, con el venv activo
+# desde la raíz del proyecto (terminal integrada de VS Code):
+docker compose up -d --build
+```
+
+Eso deja corriendo la BD (bdfacturas completa) y la API. Alternativa para
+desarrollo fase a fase — la API local contra la BD del compose:
+
+```powershell
+docker compose up -d postgres
+.\.venv\Scripts\Activate.ps1
 $env:DB_POSTGRES = "postgresql+asyncpg://paradigmas:paradigmas123@localhost:15432/bdfacturas_postgres_local"
+cd api_facturas
 uvicorn main:app --port 8002 --reload
 ```
 

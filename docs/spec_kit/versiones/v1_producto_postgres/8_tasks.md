@@ -10,14 +10,17 @@
 ## Fase 0 — Base de datos y esqueleto
 - [ ] Copiar a `db/init.sql` el script **provisto** con esta versión (la BD
       `bdfacturas` COMPLETA — no se escribe ni se genera con IA; ver
-      [5_data_model.md](5_data_model.md) §1) y montar PostgreSQL con la
-      receta de §3.
+      [5_data_model.md](5_data_model.md) §1).
+- [ ] Crear el `docker-compose.yml` con el servicio `postgres` (volumen
+      `pgdata`, `db/init.sql` montado, puerto 15432, healthcheck — ver
+      [3_plan.md](3_plan.md) §5) y levantarlo: `docker compose up -d`.
 - [ ] Crear la carpeta `api_facturas/` con subcarpetas `models/`,
       `controllers/`, `servicios/` (`abstracciones/`), `repositorios/`
       (`abstracciones/`) y sus `__init__.py`.
 - [ ] `requirements.txt`: fastapi, uvicorn, sqlalchemy[asyncio], asyncpg,
       greenlet, pydantic.
-- [ ] Entorno virtual + `pip install -r requirements.txt`.
+- [ ] Entorno virtual + `pip install -r requirements.txt` (para desarrollar
+      las fases con `uvicorn` local; la entrega final corre en Docker).
 
 **Verificar:** `python -c "import fastapi, sqlalchemy, asyncpg"` no falla, y un
 cliente SQL ve las **12 tablas** de `bdfacturas` con **8 filas en `producto`**.
@@ -75,7 +78,19 @@ listar (200 con 8 y `?limite=3` con 3), obtener PR001 (200), PR999 (404),
 POST inválido (422), y el contraste PUT vs PATCH con `{"stock": 7}`
 (422 vs 200).
 
-## Fase 6 — Cierre de la versión
+## Fase 6 — Docker: un solo comando
+- [ ] `api_facturas/Dockerfile`: `python:3.12-slim`, `requirements.txt` +
+      `pip install` primero (caché de capas), luego el código, `CMD uvicorn`.
+- [ ] Agregar al `docker-compose.yml` el servicio `api-facturas`: `build:`,
+      código montado como volumen + `--reload`, puerto 8002, `DB_POSTGRES`
+      con el host interno `postgres:5432`, y `depends_on` con
+      `condition: service_healthy` ([3_plan.md](3_plan.md) §5).
+
+**Verificar:** `docker compose down` y luego `docker compose up -d --build`
+— UN comando deja BD y API funcionando (criterio 1 de la spec); guardar un
+`.py` recarga la API dentro del contenedor.
+
+## Fase 7 — Cierre de la versión
 - [ ] Correr el smoke test completo de [7_quickstart.md](7_quickstart.md) §3 —
       equivale a los 6 criterios de aceptación de [2_spec.md](2_spec.md) §5.
 - [ ] `.gitignore` (`__pycache__/`, `.venv/`, `.env*`).
