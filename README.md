@@ -36,6 +36,10 @@ v6  frontend Flask
    aceptación. Se cierra con commit + tag (`v1`), y solo entonces aparece la
    spec de la siguiente.
 
+> 🤖 ¿Va a trabajar con una IA de chat (Gemini, DeepSeek, ChatGPT)?
+> Siga la **[Guía para construir la versión con IA](docs/GUIA_IA.md)**:
+> qué archivos subirle y el prompt exacto, listo para copiar.
+
 ## Material conceptual del curso
 
 Cuatro documentos cortos con conceptos, justificación, ejemplos amarrados a
