@@ -21,10 +21,31 @@
 
 ## 1. Propósito de la v1
 
-Construir la **primera rebanada vertical** de la API de facturación: el CRUD
-completo de **una sola entidad (`producto`)** contra **un solo motor
-(PostgreSQL)** — pero con la **arquitectura en capas completa desde el primer
-día**: controller → servicio → repositorio, comunicados por interfaces.
+Construir la **primera rebanada vertical (corte vertical)** de la API de
+facturación: el CRUD completo de **una sola entidad (`producto`)** contra
+**un solo motor (PostgreSQL)** — pero con la **arquitectura en capas completa
+desde el primer día**: controller → servicio → repositorio, comunicados por
+interfaces.
+
+> **¿Qué es una "rebanada vertical"?** En lugar de construir el sistema por
+> capas horizontales ("primero TODOS los repositorios, luego TODOS los
+> servicios…" — donde nada funciona hasta el final), se construye un corte
+> que **atraviesa todas las capas de arriba a abajo** para UNA funcionalidad.
+> Como una rebanada de pastel: un solo corte, pero con todas las capas.
+>
+> ```
+> ┌─────────────────────────── el sistema completo ───────────────────────────┐
+> │  CONTROLLER  │ producto █ │ persona    │ factura    │ ...las demás (v2)   │
+> │  SERVICIO    │ producto █ │ persona    │ factura    │ ...                 │
+> │  REPOSITORIO │ producto █ │ persona    │ factura    │ ...                 │
+> │  BD          │ producto █ │ persona    │ factura    │ ...                 │
+> └──────────────┴─────▲──────┴────────────┴────────────┴─────────────────────┘
+>                      └── la v1 ES esta rebanada: funciona de punta a punta
+> ```
+>
+> Ventaja: algo funciona **desde la v1** y la arquitectura queda validada —
+> si las capas encajan para `producto`, las siguientes rebanadas (v2) caen en
+> surcos ya hechos.
 
 La v1 es pequeña a propósito: su valor no está en la funcionalidad sino en
 dejar el **esqueleto arquitectónico correcto** sobre el que las versiones
