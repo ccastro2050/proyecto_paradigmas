@@ -107,6 +107,7 @@ aceptación (se cierra con tag). Detalle completo:
 | [Constitución](docs/spec_kit/1_constitution.md) | Las reglas permanentes del proyecto |
 | [2_spec.md](docs/spec_kit/versiones/v1_producto_postgres/2_spec.md) | QUÉ construir y los 6 criterios de aceptación |
 | [3_plan.md](docs/spec_kit/versiones/v1_producto_postgres/3_plan.md) | CÓMO: stack, carpetas, capas e interfaces |
+| [4_research.md](docs/spec_kit/versiones/v1_producto_postgres/4_research.md) | Las decisiones y sus alternativas descartadas *(lectura opcional)* |
 | [5_data_model.md](docs/spec_kit/versiones/v1_producto_postgres/5_data_model.md) | La BD completa (dada) y la tabla `producto` que usa la v1 |
 | [6_contracts.md](docs/spec_kit/versiones/v1_producto_postgres/6_contracts.md) | Los 7 endpoints con formatos exactos (5 verbos HTTP) |
 | [7_quickstart.md](docs/spec_kit/versiones/v1_producto_postgres/7_quickstart.md) | Smoke test para validar lo construido |

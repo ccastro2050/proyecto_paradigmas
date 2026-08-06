@@ -1,4 +1,4 @@
-# Cómo construir la versión con IA — por chat o con un IDE agéntico
+﻿# Cómo construir la versión con IA — por chat o con un IDE agéntico
 
 > Guía para trabajar la versión en curso con ayuda de IA por **cualquiera de
 > los dos caminos**: un chat web (Gemini, DeepSeek, ChatGPT…) o un IDE
@@ -14,7 +14,7 @@
 | | **Camino A: chat web** | **Camino B: IDE agéntico** |
 |---|---|---|
 | Herramientas | Gemini, DeepSeek, ChatGPT, Claude (web) | Antigravity, Cursor, Claude Code, Copilot agente |
-| ¿Cómo conoce la spec? | Usted le **sube los 7 archivos** | El agente **lee la carpeta `specs/` de su proyecto** |
+| ¿Cómo conoce la spec? | Usted le **sube los 8 archivos** | El agente **lee la carpeta `specs/` de su proyecto** |
 | ¿Quién escribe los archivos? | Usted copia/pega lo que la IA propone | El agente crea y edita los archivos directamente |
 | ¿Quién ejecuta los comandos? | Usted, en un IDE (**preferible**: la terminal integrada de VS Code) o en PowerShell, y pega la salida | El agente (pidiéndole permiso); usted revisa la salida |
 | Su papel | Operador: ejecutar y reportar | Supervisor: revisar diffs y aprobar |
@@ -28,7 +28,7 @@ aceptación de `2_spec.md` en verde**, verificados con el smoke test de
 
 ## Camino A — Chat web (Gemini, DeepSeek, ChatGPT…)
 
-### A.1 Qué subirle (los 7 archivos de la v1)
+### A.1 Qué subirle (los 8 archivos de la v1)
 
 En el chat (todos aceptan adjuntar archivos; si el suyo no, pegue el contenido
 de cada uno en el mismo orden):
@@ -38,12 +38,13 @@ de cada uno en el mismo orden):
 | 1 | `docs/spec_kit/1_constitution.md` | Las reglas permanentes |
 | 2 | `docs/spec_kit/versiones/v1_producto_postgres/2_spec.md` | QUÉ construir y los criterios de aceptación |
 | 3 | `.../v1_producto_postgres/3_plan.md` | CÓMO: stack, carpetas, capas |
-| 4 | `.../v1_producto_postgres/5_data_model.md` | La tabla producto (DDL + docker run) |
-| 5 | `.../v1_producto_postgres/6_contracts.md` | Los 7 endpoints exactos |
-| 6 | `.../v1_producto_postgres/7_quickstart.md` | El smoke test de validación |
-| 7 | `.../v1_producto_postgres/8_tasks.md` | Las fases, en orden |
+| 4 | `.../v1_producto_postgres/4_research.md` | Decisiones y alternativas (el porqué del plan) |
+| 5 | `.../v1_producto_postgres/5_data_model.md` | La BD completa (dada) y la tabla producto |
+| 6 | `.../v1_producto_postgres/6_contracts.md` | Los 7 endpoints exactos |
+| 7 | `.../v1_producto_postgres/7_quickstart.md` | El smoke test de validación |
+| 8 | `.../v1_producto_postgres/8_tasks.md` | Las fases, en orden |
 
-Además de los 7 documentos, la versión trae **un artefacto que NO se sube al
+Además de los 8 documentos, la versión trae **un artefacto que NO se sube al
 chat ni lo genera la IA**: `db/init.sql` (el script completo de la BD) —
 usted lo **copia tal cual** del repositorio a su proyecto (ver A.3).
 
@@ -54,9 +55,9 @@ IA lo que viene — la regla es que la v1 no anticipa).
 
 ```
 Actúa como mi asistente de programación para construir la VERSIÓN 1 de un
-proyecto universitario, partiendo de cero. Te adjunto 7 documentos: una
+proyecto universitario, partiendo de cero. Te adjunto 8 documentos: una
 constitución (reglas permanentes) y el spec kit de la versión 1 (spec, plan,
-modelo de datos, contratos, quickstart y tareas).
+research con las decisiones, modelo de datos, contratos, quickstart y tareas).
 
 REGLAS DE TRABAJO (no negociables):
 
@@ -99,7 +100,7 @@ para ver cómo se llegó a lo que existe. Su trabajo de reconstrucción va en un
 1. Cree una carpeta para su proyecto (ej.: `mi_v1_producto/`) donde usted
    guarda sus trabajos — fuera de la carpeta clonada.
 2. Ábrala en VS Code (*File → Open Folder*).
-3. Copie dentro los 7 documentos de la spec (los de la tabla A.1) a una
+3. Copie dentro los 8 documentos de la spec (los de la tabla A.1) a una
    subcarpeta `specs/` — así los tiene a mano y puede subirlos al chat desde ahí.
 
 La estructura final que usted irá creando en SU carpeta (es la de
@@ -107,7 +108,7 @@ La estructura final que usted irá creando en SU carpeta (es la de
 
 ```
 mi_v1_producto/                   ← SU carpeta (nueva, vacía al empezar)
-├── specs/                        ← copia de los 7 documentos (solo lectura)
+├── specs/                        ← copia de los 8 documentos (solo lectura)
 ├── docker-compose.yml            ← Fase 0 (servicio postgres) y Fase 6 (servicio api-facturas)
 ├── db/
 │   └── init.sql                  ← Fase 0: COPIADO del repo (la BD completa; no lo genera la IA)
@@ -180,7 +181,7 @@ pip install -r api_facturas/requirements.txt
 2. **Una fase a la vez.** Si la IA se embala y entrega tres fases juntas,
    recuérdele la regla 2d: "detente, vamos fase por fase".
 3. **Si el chat pierde el contexto** (conversaciones largas): abra un chat
-   nuevo, vuelva a subir los 7 documentos y agregue al prompt: "Ya tengo
+   nuevo, vuelva a subir los 8 documentos y agregue al prompt: "Ya tengo
    construidas las fases 0 a N; te pego el código actual. Continuemos en la
    fase N+1" (y pegue sus archivos).
 
@@ -199,7 +200,7 @@ comandos en la terminal (pidiendo permiso). Usted pasa de operador a
 la referencia). El agente construye en SU proyecto:
 
 1. Cree una carpeta nueva y vacía para su proyecto (ej.: `mi_v1_producto/`) y
-   copie dentro: los 7 documentos de la tabla A.1 en una subcarpeta `specs/`,
+   copie dentro: los 8 documentos de la tabla A.1 en una subcarpeta `specs/`,
    y el script `db/init.sql` del repositorio en `db/init.sql` (la BD completa
    viene dada — el agente no debe generarla).
 2. Abra SU carpeta en el IDE (en Antigravity: *Open Folder*; el agente verá
@@ -213,9 +214,9 @@ la referencia). El agente construye en SU proyecto:
 ```
 Construye la VERSIÓN 1 de este proyecto, partiendo de cero.
 
-Primero lee, en este orden, los 7 documentos de la carpeta specs/:
-1_constitution, 2_spec, 3_plan, 5_data_model, 6_contracts, 7_quickstart y
-8_tasks. Después resume en máximo 10 líneas qué vas a construir y espera mi
+Primero lee, en este orden, los 8 documentos de la carpeta specs/:
+1_constitution, 2_spec, 3_plan, 4_research, 5_data_model, 6_contracts,
+7_quickstart y 8_tasks. Después resume en máximo 10 líneas qué vas a construir y espera mi
 confirmación antes de tocar nada. El código va en la raíz de este proyecto
 según la estructura de 3_plan.md (specs/ es solo lectura: no la modifiques).
 La base de datos YA VIENE DADA en db/init.sql — úsala tal cual para montar

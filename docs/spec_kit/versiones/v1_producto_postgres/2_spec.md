@@ -11,7 +11,8 @@
 > |---|---|
 > | **2_spec.md** (este) | QUÉ construir en v1 y sus criterios de aceptación |
 > | [3_plan.md](3_plan.md) | CÓMO: stack, estructura y diseño de las capas |
-> | [5_data_model.md](5_data_model.md) | La tabla `producto` (DDL + datos de ejemplo) |
+> | [4_research.md](4_research.md) | Decisiones y alternativas *(lectura opcional)* |
+> | [5_data_model.md](5_data_model.md) | La BD completa (dada) y la tabla `producto` |
 > | [6_contracts.md](6_contracts.md) | Los 7 endpoints con formatos exactos |
 > | [7_quickstart.md](7_quickstart.md) | Arranque y smoke test |
 > | [8_tasks.md](8_tasks.md) | Orden de construcción por fases verificables |
