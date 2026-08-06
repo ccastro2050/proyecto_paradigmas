@@ -20,6 +20,15 @@
 | Su papel | Operador: ejecutar y reportar | Supervisor: revisar diffs y aprobar |
 | Riesgo típico | La IA "olvida" el contexto en chats largos | El agente se embala y hace de más sin que usted lo note |
 
+> **¿De qué "comandos" habla la tabla?** De los **comandos de verificación de
+> cada fase** que pide `8_tasks.md`. Ejemplos reales de la v1:
+> `docker compose up -d` (levantar la BD), `pip install -r
+> api_facturas/requirements.txt` (instalar dependencias),
+> `uvicorn main:app --port 8002 --reload` (arrancar la API) y los `curl` del
+> smoke test (`curl http://localhost:8002/api/producto`). En el chat, la IA
+> se los dicta y USTED los ejecuta; en el IDE agéntico, el agente los ejecuta
+> y usted revisa la salida.
+
 En ambos casos, "terminado" significa lo mismo: **los 6 criterios de
 aceptación de `2_spec.md` en verde**, verificados con el smoke test de
 `7_quickstart.md` — corrido por usted.
