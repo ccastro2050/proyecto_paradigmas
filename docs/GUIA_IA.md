@@ -48,6 +48,13 @@ Además de los 8 documentos, la versión trae **un artefacto que NO se sube al
 chat ni lo genera la IA**: `db/init.sql` (el script completo de la BD) —
 usted lo **copia tal cual** del repositorio a su proyecto (ver A.3).
 
+> **¿Qué es un "artefacto"?** En ingeniería de software, cualquier archivo
+> que el proceso produce o entrega (documentos, código, scripts…). Aquí lo
+> usamos para distinguir: los **documentos** se LEEN (la IA construye a partir
+> de ellos); el **artefacto** `db/init.sql` se USA tal cual — es insumo dado,
+> como la imagen de PostgreSQL. Analogía: los documentos son el plano de la
+> casa; el artefacto es un prefabricado que llega listo a la obra.
+
 **No suba nada más.** El mapa de versiones no hace falta (y le revelaría a la
 IA lo que viene — la regla es que la v1 no anticipa).
 

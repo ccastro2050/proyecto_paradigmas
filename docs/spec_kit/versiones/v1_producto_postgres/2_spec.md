@@ -125,7 +125,16 @@ inexistente → 404.
    servicio se puede probar con un repositorio **falso** en memoria que cumpla
    `IRepositorioProducto`, sin PostgreSQL corriendo.
 
-## 6. Definición de TERMINADA
+## 6. Glosario mínimo
+
+| Término | Significado |
+|---|---|
+| **Documento (del kit)** | Texto que DESCRIBE qué/cómo construir; se lee y de él sale el código |
+| **Artefacto (provisto)** | Archivo que se entrega LISTO y se usa tal cual, sin generarlo ni modificarlo — en v1: `db/init.sql` (la BD completa) |
+| **Criterio de aceptación** | Prueba verificable que decide si la versión está terminada (no es opinión) |
+| **Rebanada vertical** | Un recorte del sistema que atraviesa TODAS las capas (HTTP→negocio→datos) aunque cubra una sola entidad |
+
+## 7. Definición de TERMINADA
 
 Los 6 criterios pasan → commit + tag `v1` → recién entonces se escribe la spec
 de la v2 ([mapa](../0_mapa_versiones.md)).
