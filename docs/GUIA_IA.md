@@ -18,7 +18,7 @@
 | ¿Quién escribe los archivos? | Usted copia/pega lo que la IA propone | El agente crea y edita los archivos directamente |
 | ¿Quién ejecuta los comandos? | Usted, en un IDE (**preferible**: la terminal integrada de VS Code) o en PowerShell, y pega la salida | El agente (pidiéndole permiso); usted revisa la salida |
 | Su papel | Operador: ejecutar y reportar | Supervisor: revisar diffs y aprobar |
-| Riesgo típico | La IA "olvida" el contexto en chats largos | El agente se embala y hace de más sin que usted lo note |
+| Riesgo típico | La IA "olvida" el contexto en chats largos | El agente avanza demasiado rápido: hace varias fases de un tirón o agrega cosas no pedidas, sin que usted alcance a revisarlas |
 
 > **¿De qué "comandos" habla la tabla?** De los **comandos de verificación de
 > cada fase** que pide `8_tasks.md`. Ejemplos reales de la v1:
@@ -194,7 +194,7 @@ pip install -r api_facturas/requirements.txt
    IDE** (preferible — VS Code: menú *Terminal → New Terminal*) o en una
    ventana de PowerShell; pegue la salida REAL en el chat (completa, con el
    error si lo hay).
-2. **Una fase a la vez.** Si la IA se embala y entrega tres fases juntas,
+2. **Una fase a la vez.** Si la IA se acelera y entrega tres fases juntas,
    recuérdele la regla 2d: "detente, vamos fase por fase".
 3. **Si el chat pierde el contexto** (conversaciones largas): abra un chat
    nuevo, vuelva a subir los 8 documentos y agregue al prompt: "Ya tengo
