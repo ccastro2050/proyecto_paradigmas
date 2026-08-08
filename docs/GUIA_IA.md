@@ -167,7 +167,13 @@ Si un bloque llega **sin ruta**, no adivine: pregúntele "¿en qué archivo va
 esto?". Y si le dice "modifica la línea X", pídale mejor el archivo completo
 actualizado — copiar archivos enteros evita errores de edición manual.
 
-**¿Desde qué carpeta se corre cada comando?** (el error más común es correr
+**A la terminal SOLO se le pegan COMANDOS** — lo que viene en las cajitas
+de código del chat, uno a la vez. Si pega el texto del mensaje (las
+frases), la terminal intentará ejecutar cada palabra y llenará la pantalla
+de errores tipo `'Te' no se reconoce como nombre de un cmdlet` (no daña
+nada, pero asusta). Al chat, texto; a la terminal, comandos.
+
+**¿Desde qué carpeta se corre cada comando?** (el otro error común es correr
 un comando parado en la carpeta equivocada — "no encuentro el archivo"):
 
 | Comando | Se corre desde |
