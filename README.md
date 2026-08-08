@@ -84,7 +84,55 @@ siguiendo las especificaciones — con o sin ayuda de IA:
 
 ---
 
-## 2. La ruta de versiones
+## 2. Estructura del repositorio
+
+Qué es cada carpeta y cada archivo, y para qué sirve:
+
+```
+proyecto_paradigmas/
+├── docker-compose.yml           # TODO el sistema declarado: PostgreSQL + API
+│                                #   (el "un solo comando" del proyecto)
+├── db/
+│   └── init.sql                 # Crea bdfacturas COMPLETA (12 tablas, triggers, datos).
+│                                #   PostgreSQL lo ejecuta solo la PRIMERA vez (volumen vacío)
+│
+├── api_facturas/                # LA API DE LA v1 — FastAPI (puerto 8002)
+│   ├── Dockerfile               # Su imagen: python:3.12-slim + requirements
+│   ├── requirements.txt         # Dependencias exactas (fastapi, uvicorn, sqlalchemy, asyncpg)
+│   ├── main.py                  # Crea la app, configura CORS y registra el router
+│   ├── controllers/             # Capa 1 — HTTP: los endpoints de /api/producto
+│   ├── models/                  # Pydantic: un modelo por verbo (Producto,
+│   │                            #   ProductoReemplazo, ProductoActualizar) → los 422
+│   ├── servicios/               # Capa 2 — negocio: servicio + ensamblador (proto-fábrica)
+│   │   └── abstracciones/       #   la interfaz (typing.Protocol) que la capa 1 conoce
+│   └── repositorios/            # Capa 3 — datos: SQL asíncrono contra PostgreSQL
+│       └── abstracciones/       #   la interfaz que la capa 2 conoce
+│
+├── docs/
+│   ├── spec_kit/                # LAS ESPECIFICACIONES: constitución permanente +
+│   │                            #   una carpeta de specs por versión (v1, v2, …)
+│   ├── GUIA_IA.md               # Cómo reconstruir la versión desde 0 con ayuda de una IA
+│   ├── PARADIGMA_POO.md         # Material conceptual: POO (con Pydantic), SOLID+capas,
+│   ├── SOLID_Y_CAPAS.md         #   ACID, Docker y SDD (un .md por tema)
+│   ├── PRINCIPIOS_ACID.md       #
+│   ├── CONCEPTOS_DOCKER.md      #
+│   ├── SDD_SPECKIT.md           #
+│   ├── TUTORIAL_PGADMIN.md      # Tutoriales de administración de la BD, paso a paso
+│   ├── TUTORIAL_VSCODE_SQLTOOLS.md  #   con capturas reales
+│   └── img_pgadmin/ img_sqltools/   # Las capturas de esos tutoriales
+│
+├── .gitignore / .gitattributes  # Higiene del repo (ignora .venv, .session.sql, EOL)
+└── README.md                    # Este archivo
+```
+
+La regla de lectura: **el sistema vive en `docker-compose.yml`**, la API
+vive en `api_facturas/` (una carpeta por capa, cada una con su interfaz en
+`abstracciones/`), y **todo lo que explica** vive en `docs/`. Cuando lleguen
+las versiones siguientes, aquí aparecerán más carpetas de componentes (y el
+compose crecerá con ellas). El sistema completo de referencia está en la
+rama `sistema-completo`.
+
+## 3. La ruta de versiones
 
 ```
 v1  api_facturas: CRUD de producto, solo PostgreSQL   ← USTED ESTÁ AQUÍ (cerrada: tag v1)
@@ -100,7 +148,7 @@ propia spec, y una versión está TERMINADA solo cuando pasa sus criterios de
 aceptación (se cierra con tag). Detalle completo:
 **[mapa de versiones](docs/spec_kit/versiones/0_mapa_versiones.md)**.
 
-## 3. Las especificaciones de la versión actual (v1)
+## 4. Las especificaciones de la versión actual (v1)
 
 | Documento | Qué contiene |
 |---|---|
@@ -113,7 +161,7 @@ aceptación (se cierra con tag). Detalle completo:
 | [7_quickstart.md](docs/spec_kit/versiones/v1_producto_postgres/7_quickstart.md) | Smoke test para validar lo construido |
 | [8_tasks.md](docs/spec_kit/versiones/v1_producto_postgres/8_tasks.md) | Las fases de construcción, en orden |
 
-## 4. Material conceptual del curso
+## 5. Material conceptual del curso
 
 | Documento | Qué cubre |
 |---|---|
