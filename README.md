@@ -96,6 +96,9 @@ proyecto_paradigmas/
 │   └── init.sql                 # Crea bdfacturas COMPLETA (12 tablas, triggers, datos).
 │                                #   PostgreSQL lo ejecuta solo la PRIMERA vez (volumen vacío)
 │
+├── backupdb/                    # Respaldos (dumps) de la BD — su README explica
+│                                #   cómo hacer el backup y cómo restaurarlo
+│
 ├── api_facturas/                # LA API DE LA v1 — FastAPI (puerto 8002)
 │   ├── Dockerfile               # Su imagen: python:3.12-slim + requirements
 │   ├── requirements.txt         # Dependencias exactas (fastapi, uvicorn, sqlalchemy, asyncpg)
