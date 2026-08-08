@@ -219,14 +219,18 @@ REGLAS DE TRABAJO (no negociables):
       pegar, con los comentarios didácticos en español que exige la
       constitución). Esperas mi "listo" y solo entonces me das el
       siguiente archivo de la fase.
-   c. Me dices el comando de verificación de la fase y QUÉ salida esperar.
-   d. TE DETIENES y esperas a que yo ejecute y te pegue el resultado.
-      No avanzas a la siguiente fase sin mi confirmación.
+   c. Al cerrar la fase me dices su comando de verificación y QUÉ salida
+      esperar. Correr esa verificación en el momento es OPCIONAL: puedo
+      dejarla para el final — tú sigues con la fase siguiente cuando yo
+      diga "listo".
    NOTA: la estructura de carpetas y los archivos vacíos YA EXISTEN en mi
    proyecto — no me des comandos para crearlos; tu trabajo es dictarme el
    CONTENIDO de cada archivo.
-3. Si mi resultado muestra un error, lo diagnosticamos y corregimos ANTES de
-   avanzar. Nunca "sigamos y después lo arreglamos".
+3. Los errores NO nos frenan. Si te pego un error, lo diagnosticas y me
+   das el archivo completo corregido; si no sale rápido, seguimos con las
+   fases y lo retomamos al final. Al terminar todas las fases me guías
+   para correr el smoke test de 7_quickstart.md y corregimos juntos todo
+   lo que salga.
 4. El código debe cumplir los contratos de 6_contracts.md al pie de la letra:
    mismos verbos, mismas rutas, mismos códigos de estado, mismos formatos de
    respuesta (incluido el contraste PUT=reemplazo completo vs PATCH=parcial).
@@ -234,6 +238,14 @@ REGLAS DE TRABAJO (no negociables):
 6. Yo trabajo en Windows con un IDE (VS Code, usando su terminal integrada
    de PowerShell), Python 3.12 y Docker Desktop. Dame los comandos para ese
    entorno.
+7. En mi máquina TAMBIÉN corre el proyecto clonado del curso con sus
+   puertos originales. Para que ambos convivan, MI proyecto publica los
+   puertos del host con +100: en el docker-compose.yml la API va
+   "8102:8002" y PostgreSQL va "15532:5432" (adentro de los contenedores
+   todo queda igual que en los documentos). La cadena de conexión por
+   defecto del ensamblador (para correr sin Docker) apunta a
+   localhost:15532. Cuando me des URLs o comandos de prueba, usa
+   localhost:8102 (API) y localhost:15532 (BD).
 
 Al final, la versión 1 está TERMINADA solo cuando pasan los 6 criterios de
 aceptación de 2_spec.md, verificados con el smoke test de 7_quickstart.md.
@@ -244,14 +256,24 @@ entendiste el alcance) y luego arranca con la Fase 0.
 
 ### A.4 El método de la conversación
 
-1. **La IA propone, usted ejecuta.** Copie cada archivo a la ruta exacta en
-   su IDE; corra el comando de verificación en la **terminal integrada del
-   IDE** (preferible — VS Code: menú *Terminal → New Terminal*) o en una
-   ventana de PowerShell; pegue la salida REAL en el chat (completa, con el
-   error si lo hay).
-2. **Una fase a la vez.** Si la IA se acelera y entrega tres fases juntas,
-   recuérdele la regla 2d: "detente, vamos fase por fase".
-3. **Si el chat pierde el contexto** (conversaciones largas): abra un chat
+1. **Pegue primero, ejecute cuando quiera.** Lo obligatorio es pegar cada
+   archivo en su ruta y responder "listo". Las verificaciones de cada fase
+   puede correrlas en el momento (ideal: detecta errores temprano) o
+   dejarlas todas para el final — **no son un peaje para avanzar**.
+2. **No se quede varado en un error.** Si algo falla en una fase y no sale
+   rápido, anótelo, siga copiando las fases siguientes y retómelo al
+   final — muchos errores desaparecen cuando el sistema está completo, y
+   los que queden se corrigen en el paso siguiente.
+3. **El punto de control real es el smoke test final** (7_quickstart.md):
+   al terminar las fases, córralo en la terminal integrada del IDE y pegue
+   en el chat CADA error tal cual salga (completo). La IA le entrega el
+   archivo corregido, usted lo pega y repite hasta que los 6 criterios
+   estén en verde. **Ojo con los puertos**: SU proyecto corre con +100
+   (regla 7 del prompt) — donde el quickstart diga `localhost:8002` use
+   `localhost:8102`, y donde diga `15432` use `15532`.
+4. **Si la IA se acelera** y entrega varios archivos de un tirón,
+   recuérdele la regla 2b: "de a uno, espera mi listo".
+5. **Si el chat pierde el contexto** (conversaciones largas): abra un chat
    nuevo, vuelva a subir los 8 documentos y agregue al prompt: "Ya tengo
    construidas las fases 0 a N; te pego el código actual. Continuemos en la
    fase N+1" (y pegue sus archivos).
