@@ -167,14 +167,13 @@ Si un bloque llega **sin ruta**, no adivine: pregúntele "¿en qué archivo va
 esto?". Y si le dice "modifica la línea X", pídale mejor el archivo completo
 actualizado — copiar archivos enteros evita errores de edición manual.
 
-**Dónde parar la terminal:** los comandos de Docker y `pip` se corren desde la
-raíz de SU carpeta (`mi_v1_producto/`); `uvicorn main:app --port 8002 --reload`
-se corre desde `api_facturas/` (donde vive `main.py`):
+**¿Desde qué carpeta se corre cada comando?** (el error más común es correr
+un comando parado en la carpeta equivocada — "no encuentro el archivo"):
 
-```powershell
-cd api_facturas
-uvicorn main:app --port 8002 --reload
-```
+| Comando | Se corre desde |
+|---|---|
+| `docker compose ...` · `pip install ...` | La **raíz** de su proyecto (ahí viven `docker-compose.yml` y `.venv`) |
+| `uvicorn main:app --port 8002 --reload` | `api_facturas\` (ahí vive `main.py`) — primero `cd api_facturas` |
 
 **El entorno virtual (Fase 0), por si la IA no lo detalla:**
 
