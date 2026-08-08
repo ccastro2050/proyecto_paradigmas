@@ -1,4 +1,4 @@
-﻿# Cómo construir la versión con IA — por chat o con un IDE agéntico
+# Cómo construir la versión con IA — por chat o con un IDE agéntico
 
 > Guía para trabajar la versión en curso con ayuda de IA por **cualquiera de
 > los dos caminos**: un chat web (Gemini, DeepSeek, ChatGPT…) o un IDE
@@ -82,7 +82,7 @@ para ver cómo se llegó a lo que existe. Su trabajo de reconstrucción va en un
    integrada (*Terminal → New Terminal*, PowerShell), parado en su carpeta:
 
    ```powershell
-   mkdir specs, db, api_facturas\models, api_facturas\controllers, api_facturas\servicios\abstracciones, api_facturas\repositorios\abstracciones
+   mkdir specs\versiones\v1_producto_postgres, db, api_facturas\models, api_facturas\controllers, api_facturas\servicios\abstracciones, api_facturas\repositorios\abstracciones
    ```
 
 4. **Cree los ARCHIVOS VACÍOS** (la IA los irá llenando uno a uno; los
@@ -96,30 +96,42 @@ para ver cómo se llegó a lo que existe. Su trabajo de reconstrucción va en un
    copia del repositorio en el paso 5.)
 
 5. **Copie los 9 archivos que vienen dados** (los 8 documentos de la tabla
-   A.1 a `specs/` y el script de la BD a `db/`). Con el explorador de
-   Windows (copiar y pegar), o con estos comandos en la misma terminal:
+   A.1 a `specs/` — replicando su estructura por versiones — y el script de
+   la BD a `db/`). Con el explorador de Windows (copiar y pegar), o con
+   estos comandos en la misma terminal:
 
    ```powershell
-   $repo = "C:\ruta\a\su\clon\proyecto_paradigmas"   # ← AJUSTE: dónde clonó el repositorio
+   # $repo = la carpeta donde CLONÓ el repositorio del curso
+   # (la que descargó con `git clone` en la sección 1 del README):
+   $repo = "C:\ruta\a\su\clon\proyecto_paradigmas"   # ← AJUSTE la ruta
    Copy-Item "$repo\db\init.sql" db\init.sql
    Copy-Item "$repo\docs\spec_kit\1_constitution.md" specs\
-   Copy-Item "$repo\docs\spec_kit\versiones\v1_producto_postgres\*.md" specs\
+   Copy-Item "$repo\docs\spec_kit\versiones\v1_producto_postgres\*.md" specs\versiones\v1_producto_postgres\
    ```
 
    (¿Por qué se copian y no los genera la IA? Los 8 `.md` son las
    especificaciones que usted le subirá al chat; `db/init.sql` es la BD
-   completa ya escrita — es insumo dado, como la imagen de PostgreSQL.)
+   completa ya escrita — es insumo dado, como la imagen de PostgreSQL. Y
+   `specs/` va **por versiones** igual que el repo: la constitución es
+   permanente y vive en la raíz; los 7 de la v1 viven en SU carpeta de
+   versión — cuando llegue la v2, tendrá la suya al lado sin chocar
+   nombres.)
 
-**Antes de abrir el chat, verifique:** `specs/` debe tener **8 archivos**
-y `db\init.sql` debe tener contenido (~960 líneas). Si algo está vacío,
-falta el paso 5.
+**Antes de abrir el chat, verifique:** `specs\1_constitution.md` debe
+existir, `specs\versiones\v1_producto_postgres\` debe tener **7 archivos**
+(2_spec a 8_tasks) y `db\init.sql` debe tener contenido (~960 líneas).
+Si algo está vacío, falta el paso 5.
 
 La estructura queda lista ANTES de hablar con la IA (es la de `3_plan.md`
 §2); al lado, la fase en que la IA le dictará cada contenido:
 
 ```
 mi_v1_producto/                   ← SU carpeta
-├── specs/                        ← copia de los 8 documentos (solo lectura)
+├── specs/                        ← las especificaciones, POR VERSIONES (como el repo)
+│   ├── 1_constitution.md         ←   las reglas permanentes (viven en la raíz)
+│   └── versiones/
+│       └── v1_producto_postgres/ ←   los 7 documentos de la v1 (la v2 tendrá
+│                                 ←   su propia carpeta al lado)
 ├── docker-compose.yml            ← Fase 0 (servicio postgres) y Fase 6 (servicio api-facturas)
 ├── db/
 │   └── init.sql                  ← Fase 0: COPIADO del repo (la BD completa; no lo genera la IA)
@@ -255,9 +267,12 @@ comandos en la terminal (pidiendo permiso). Usted pasa de operador a
 la referencia). El agente construye en SU proyecto:
 
 1. Cree una carpeta nueva y vacía para su proyecto (ej.: `mi_v1_producto/`) y
-   copie dentro: los 8 documentos de la tabla A.1 en una subcarpeta `specs/`,
-   y el script `db/init.sql` del repositorio en `db/init.sql` (la BD completa
-   viene dada — el agente no debe generarla).
+   copie dentro: los 8 documentos de la tabla A.1 en una subcarpeta `specs/`
+   replicando la estructura por versiones (`specs\1_constitution.md` +
+   `specs\versiones\v1_producto_postgres\` con los 7 de la versión — los
+   mismos comandos de A.2, pasos 3 a 5), y el script `db/init.sql` del
+   repositorio en `db/init.sql` (la BD completa viene dada — el agente no
+   debe generarla).
 2. Abra SU carpeta en el IDE (en Antigravity: *Open Folder*; el agente verá
    `specs/` — no hay que subirle nada).
 3. Tenga Docker Desktop corriendo (el agente necesitará levantar PostgreSQL).
@@ -269,7 +284,8 @@ la referencia). El agente construye en SU proyecto:
 ```
 Construye la VERSIÓN 1 de este proyecto, partiendo de cero.
 
-Primero lee, en este orden, los 8 documentos de la carpeta specs/:
+Primero lee, en este orden, los 8 documentos que están bajo specs/
+(1_constitution.md en la raíz; los demás en versiones/v1_producto_postgres/):
 1_constitution, 2_spec, 3_plan, 4_research, 5_data_model, 6_contracts,
 7_quickstart y 8_tasks. Después resume en máximo 10 líneas qué vas a construir y espera mi
 confirmación antes de tocar nada. El código va en la raíz de este proyecto
