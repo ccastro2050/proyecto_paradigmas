@@ -96,27 +96,18 @@ para ver cómo se llegó a lo que existe. Su trabajo de reconstrucción va en un
    (`db/init.sql` NO está en la lista a propósito: ese no nace vacío — se
    copia del repositorio en el paso 5.)
 
-5. **Copie los 9 archivos que vienen dados** (los 8 documentos de la tabla
-   A.1 a `docs/spec_kit/` — replicando su estructura por versiones — y el script de
-   la BD a `db/`). Con el explorador de Windows (copiar y pegar), o con
-   estos comandos en la misma terminal:
+5. **Copie y pegue los 9 archivos que vienen dados** (con el explorador de
+   Windows: Ctrl+C, Ctrl+V), desde la carpeta clonada del curso hacia SU
+   proyecto — cada uno a la misma ruta:
 
-   ```powershell
-   # $repo = la carpeta donde CLONÓ el repositorio del curso
-   # (la que descargó con `git clone` en la sección 1 del README):
-   $repo = "C:\ruta\a\su\clon\proyecto_paradigmas"   # ← AJUSTE la ruta
-   Copy-Item "$repo\db\init.sql" db\init.sql
-   Copy-Item "$repo\docs\spec_kit\1_constitution.md" docs\spec_kit\
-   Copy-Item "$repo\docs\spec_kit\versiones\v1_producto_postgres\*.md" docs\spec_kit\versiones\v1_producto_postgres\
-   ```
+   | Del clon del curso | A su proyecto |
+   |---|---|
+   | `db\init.sql` | `db\` |
+   | `docs\spec_kit\1_constitution.md` | `docs\spec_kit\` |
+   | Los 7 `.md` de `docs\spec_kit\versiones\v1_producto_postgres\` | `docs\spec_kit\versiones\v1_producto_postgres\` |
 
-   (¿Por qué se copian y no los genera la IA? Los 8 `.md` son las
-   especificaciones que usted le subirá al chat; `db/init.sql` es la BD
-   completa ya escrita — es insumo dado, como la imagen de PostgreSQL. Y
-   `docs/spec_kit/` va **por versiones** igual que el repo: la constitución es
-   permanente y vive en la raíz; los 7 de la v1 viven en SU carpeta de
-   versión — cuando llegue la v2, tendrá la suya al lado sin chocar
-   nombres.)
+   (Estos 9 vienen dados — la IA no los genera: las specs se le SUBEN al
+   chat, y `db/init.sql` es la BD completa ya escrita.)
 
 **Antes de abrir el chat, verifique:** `docs\spec_kit\1_constitution.md` debe
 existir, `docs\spec_kit\versiones\v1_producto_postgres\` debe tener **7 archivos**
