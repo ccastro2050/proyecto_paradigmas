@@ -15,6 +15,7 @@
 |---|---|---|
 | Herramientas | Gemini, DeepSeek, ChatGPT, Claude (web) | Antigravity, Cursor, Claude Code, Copilot agente |
 | ¿Cómo conoce la spec? | Usted le **sube los 8 archivos** | El agente **lee la carpeta `specs/` de su proyecto** |
+| ¿Quién crea la estructura de carpetas? | **USTED la crea a mano** en su proyecto — el chat no puede tocar su disco (la estructura exacta y el comando están en A.3) | El agente crea carpetas y archivos solo |
 | ¿Quién escribe los archivos? | Usted copia/pega lo que la IA propone | El agente crea y edita los archivos directamente |
 | ¿Quién ejecuta los comandos? | Usted, en un IDE (**preferible**: la terminal integrada de VS Code) o en PowerShell, y pega la salida | El agente (pidiéndole permiso); usted revisa la salida |
 | Su papel | Operador: ejecutar y reportar | Supervisor: revisar diffs y aprobar |
@@ -116,10 +117,22 @@ para ver cómo se llegó a lo que existe. Su trabajo de reconstrucción va en un
 1. Cree una carpeta para su proyecto (ej.: `mi_v1_producto/`) donde usted
    guarda sus trabajos — fuera de la carpeta clonada.
 2. Ábrala en VS Code (*File → Open Folder*).
-3. Copie dentro los 8 documentos de la spec (los de la tabla A.1) a una
-   subcarpeta `specs/` — así los tiene a mano y puede subirlos al chat desde ahí.
+3. **Cree la estructura de carpetas** (el chat no puede crearla por usted).
+   En la terminal integrada (*Terminal → New Terminal*, PowerShell), parado
+   en su carpeta, un solo comando las crea todas:
 
-La estructura final que usted irá creando en SU carpeta (es la de
+   ```powershell
+   mkdir specs, db, api_facturas\models, api_facturas\controllers, api_facturas\servicios\abstracciones, api_facturas\repositorios\abstracciones
+   ```
+
+   (También puede crearlas una a una desde el explorador de VS Code, o
+   dejar que se creen solas al guardar cada archivo con su ruta completa.)
+4. Copie dentro: los 8 documentos de la spec (los de la tabla A.1) a la
+   subcarpeta `specs/` — así los tiene a mano y puede subirlos al chat desde
+   ahí — y el script `db/init.sql` del repositorio en `db/init.sql` (la BD
+   completa viene dada — la IA no debe generarla).
+
+La estructura final que usted irá llenando en SU carpeta (es la de
 `3_plan.md` §2):
 
 ```
