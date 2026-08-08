@@ -147,6 +147,32 @@ Las tres ideas que este archivo demuestra:
    `--reload` = guardar recarga, sin reconstruir la imagen. Solo se
    reconstruye (`--build`) cuando cambian `requirements.txt` o el Dockerfile.
 
+### Contenedores huérfanos y `--remove-orphans`
+
+Compose recuerda qué contenedores creó para este proyecto (los marca con el
+nombre de la carpeta: `proyecto_paradigmas-...`). Si el `docker-compose.yml`
+**deja de declarar** un servicio que antes existía, su contenedor no se borra
+solo: queda **huérfano** — creado por el proyecto, pero ya sin servicio que lo
+respalde — y Compose lo avisa al arrancar:
+
+```
+Found orphan containers ([proyecto_paradigmas-front-1 ...]) for this project.
+```
+
+En este repositorio pasa de forma natural, porque el curso es **por
+versiones**: si usted levantó el sistema completo (rama `sistema-completo`,
+8 servicios) y luego vuelve a `main` (v1, 2 servicios), los otros 6
+contenedores quedan huérfanos. No estorban para trabajar (están detenidos),
+pero ocupan disco y ensucian `docker ps -a`. La limpieza:
+
+```powershell
+docker compose up -d --remove-orphans   # levanta lo declarado Y borra los huérfanos
+```
+
+Importante: borra los **contenedores** sobrantes, no los **volúmenes** — los
+datos de esas BD siguen ahí (sección 4) y, si vuelve a la rama completa, los
+contenedores se recrean y encuentran sus datos.
+
 ## 6. Kubernetes (y por qué este curso NO lo necesita)
 
 Kubernetes (K8s) es el orquestador de contenedores **a escala de clúster**:
@@ -186,6 +212,7 @@ docker compose up -d --build     # materializar el docker-compose.yml (con rebui
 docker compose ps                # estado de los servicios del compose
 docker compose logs api-facturas # la salida de un servicio (errores incluidos)
 docker compose down [-v]         # apagar todo (-v: borrar también los volúmenes)
+docker compose up -d --remove-orphans  # además, borrar contenedores huérfanos (sección 5)
 ```
 
 ## 8. Referencias
