@@ -245,13 +245,17 @@ REGLAS DE TRABAJO (no negociables):
    de PowerShell), Python 3.12 y Docker Desktop. Dame los comandos para ese
    entorno.
 7. En mi máquina TAMBIÉN corre el proyecto clonado del curso con sus
-   puertos originales. Para que ambos convivan, MI proyecto publica los
-   puertos del host con +100: en el docker-compose.yml la API va
-   "8102:8002" y PostgreSQL va "15532:5432" (adentro de los contenedores
-   todo queda igual que en los documentos). La cadena de conexión por
-   defecto del ensamblador (para correr sin Docker) apunta a
-   localhost:15532. Cuando me des URLs o comandos de prueba, usa
-   localhost:8102 (API) y localhost:15532 (BD).
+   puertos originales. Para que ambos convivan, MI proyecto:
+   a. Publica los puertos del host con +100: en el docker-compose.yml la
+      API va "8102:8002" y PostgreSQL va "15532:5432" (adentro de los
+      contenedores todo queda igual que en los documentos).
+   b. El docker-compose.yml empieza con la línea `name: mi_v1_producto`
+      (antes de services:) — así Docker lo trata como un proyecto
+      distinto al del curso, con sus propios contenedores y volúmenes,
+      aunque las carpetas se llamen parecido.
+   La cadena de conexión por defecto del ensamblador (para correr sin
+   Docker) apunta a localhost:15532. Cuando me des URLs o comandos de
+   prueba, usa localhost:8102 (API) y localhost:15532 (BD).
 
 Al final, la versión 1 está TERMINADA solo cuando pasan los 6 criterios de
 aceptación de 2_spec.md, verificados con el smoke test de 7_quickstart.md.
