@@ -95,10 +95,24 @@ para ver cómo se llegó a lo que existe. Su trabajo de reconstrucción va en un
    (`db/init.sql` NO está en la lista a propósito: ese no nace vacío — se
    copia del repositorio en el paso 5.)
 
-5. Copie dentro: los 8 documentos de la tabla A.1 a la subcarpeta `specs/`
-   — así los tiene a mano y puede subirlos al chat desde ahí — y el script
-   `db/init.sql` del repositorio en `db\init.sql` (la BD completa viene
-   dada — la IA no debe generarla).
+5. **Copie los 9 archivos que vienen dados** (los 8 documentos de la tabla
+   A.1 a `specs/` y el script de la BD a `db/`). Con el explorador de
+   Windows (copiar y pegar), o con estos comandos en la misma terminal:
+
+   ```powershell
+   $repo = "C:\ruta\a\su\clon\proyecto_paradigmas"   # ← AJUSTE: dónde clonó el repositorio
+   Copy-Item "$repo\db\init.sql" db\init.sql
+   Copy-Item "$repo\docs\spec_kit\1_constitution.md" specs\
+   Copy-Item "$repo\docs\spec_kit\versiones\v1_producto_postgres\*.md" specs\
+   ```
+
+   (¿Por qué se copian y no los genera la IA? Los 8 `.md` son las
+   especificaciones que usted le subirá al chat; `db/init.sql` es la BD
+   completa ya escrita — es insumo dado, como la imagen de PostgreSQL.)
+
+**Antes de abrir el chat, verifique:** `specs/` debe tener **8 archivos**
+y `db\init.sql` debe tener contenido (~960 líneas). Si algo está vacío,
+falta el paso 5.
 
 La estructura queda lista ANTES de hablar con la IA (es la de `3_plan.md`
 §2); al lado, la fase en que la IA le dictará cada contenido:
