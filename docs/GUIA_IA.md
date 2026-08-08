@@ -85,7 +85,8 @@ para ver cómo se llegó a lo que existe. Su trabajo de reconstrucción va en un
    mkdir specs\versiones\v1_producto_postgres, db, api_facturas\models, api_facturas\controllers, api_facturas\servicios\abstracciones, api_facturas\repositorios\abstracciones
    ```
 
-4. **Cree los ARCHIVOS VACÍOS** (la IA los irá llenando uno a uno; los
+4. **Cree los ARCHIVOS VACÍOS** — **USTED los irá llenando** uno a uno,
+   pegando en cada archivo el código que la IA le entregue (los
    `__init__.py` existen para que Python trate cada carpeta como paquete):
 
    ```powershell
@@ -123,7 +124,8 @@ existir, `specs\versiones\v1_producto_postgres\` debe tener **7 archivos**
 Si algo está vacío, falta el paso 5.
 
 La estructura queda lista ANTES de hablar con la IA (es la de `3_plan.md`
-§2); al lado, la fase en que la IA le dictará cada contenido:
+§2); al lado, la fase en la que la IA le entregará el código de cada
+archivo para que USTED lo pegue:
 
 ```
 mi_v1_producto/                   ← SU carpeta
