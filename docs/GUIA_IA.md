@@ -189,6 +189,17 @@ pip install -r api_facturas/requirements.txt
 
 ### A.3 El prompt (cópielo tal cual como PRIMER mensaje)
 
+**Antes de enviar el primer mensaje, tres chequeos en el chat:**
+
+1. **Los 8 adjuntos**: verifique en el chat que aparecen los 8 documentos
+   (deslice el carrusel de adjuntos si no se ven todos).
+2. **Active el modo de razonamiento** si el chat lo tiene (en DeepSeek se
+   llama **"Pensamiento Profundo"**; en otros, "Thinking" o "Razonar"):
+   sigue mucho mejor las reglas estrictas de este prompt.
+3. **Apague la búsqueda web** si el chat la tiene (en DeepSeek,
+   **"Búsqueda inteligente"**): no se necesita y puede traer código de
+   internet por fuera de la spec — justo lo que la regla 1 prohíbe.
+
 ```
 Actúa como mi asistente de programación para construir la VERSIÓN 1 de un
 proyecto universitario, partiendo de cero. Te adjunto 8 documentos: una
