@@ -15,7 +15,7 @@
 |---|---|---|
 | Herramientas | Gemini, DeepSeek, ChatGPT, Claude (web) | Antigravity, Cursor, Claude Code, Copilot agente |
 | ¿Cómo conoce la spec? | Usted le **sube los 8 archivos** | El agente **lee la carpeta `specs/` de su proyecto** |
-| ¿Quién crea la estructura de carpetas? | **USTED la crea a mano** en su proyecto — el chat no puede tocar su disco (la estructura exacta y el comando están en A.3) | El agente crea carpetas y archivos solo |
+| ¿Quién crea la estructura de carpetas? | **USTED la crea a mano** en su proyecto — el chat no puede tocar su disco (los dos comandos, carpetas y archivos vacíos, están en A.2) | El agente crea carpetas y archivos solo |
 | ¿Quién escribe los archivos? | Usted copia/pega lo que la IA propone | El agente crea y edita los archivos directamente |
 | ¿Quién ejecuta los comandos? | Usted, en un IDE (**preferible**: la terminal integrada de VS Code) o en PowerShell, y pega la salida | El agente (pidiéndole permiso); usted revisa la salida |
 | Su papel | Operador: ejecutar y reportar | Supervisor: revisar diffs y aprobar |
@@ -56,7 +56,7 @@ de cada uno en el mismo orden):
 
 Además de los 8 documentos, la versión trae **un artefacto que NO se sube al
 chat ni lo genera la IA**: `db/init.sql` (el script completo de la BD) —
-usted lo **copia tal cual** del repositorio a su proyecto (ver A.3).
+usted lo **copia tal cual** del repositorio a su proyecto (ver A.2, paso 5).
 
 > **¿Qué es un "artefacto"?** En ingeniería de software, cualquier archivo
 > que el proceso produce o entrega (documentos, código, scripts…). Aquí lo
@@ -68,46 +68,7 @@ usted lo **copia tal cual** del repositorio a su proyecto (ver A.3).
 **No suba nada más.** El mapa de versiones no hace falta (y le revelaría a la
 IA lo que viene — la regla es que la v1 no anticipa).
 
-### A.2 El prompt (cópielo tal cual como PRIMER mensaje)
-
-```
-Actúa como mi asistente de programación para construir la VERSIÓN 1 de un
-proyecto universitario, partiendo de cero. Te adjunto 8 documentos: una
-constitución (reglas permanentes) y el spec kit de la versión 1 (spec, plan,
-research con las decisiones, modelo de datos, contratos, quickstart y tareas).
-
-REGLAS DE TRABAJO (no negociables):
-
-1. La especificación manda. No agregues NADA que los documentos no pidan:
-   ni tablas extra, ni motores extra, ni fábricas "por si acaso", ni
-   autenticación, ni mejoras de tu cosecha. Si crees que falta algo,
-   pregúntame antes.
-2. Vamos a seguir 8_tasks.md FASE POR FASE, en orden. En cada fase:
-   a. Me explicas en 3-5 líneas qué vamos a hacer y por qué.
-   b. Me das el contenido COMPLETO de cada archivo de esa fase (con su ruta
-      exacta según la estructura de 3_plan.md), con los comentarios
-      didácticos en español que exige la constitución.
-   c. Me dices el comando de verificación de la fase y QUÉ salida esperar.
-   d. TE DETIENES y esperas a que yo ejecute y te pegue el resultado.
-      No avanzas a la siguiente fase sin mi confirmación.
-3. Si mi resultado muestra un error, lo diagnosticamos y corregimos ANTES de
-   avanzar. Nunca "sigamos y después lo arreglamos".
-4. El código debe cumplir los contratos de 6_contracts.md al pie de la letra:
-   mismos verbos, mismas rutas, mismos códigos de estado, mismos formatos de
-   respuesta (incluido el contraste PUT=reemplazo completo vs PATCH=parcial).
-5. Todo en español: nombres, comentarios, docstrings y mensajes.
-6. Yo trabajo en Windows con un IDE (VS Code, usando su terminal integrada
-   de PowerShell), Python 3.12 y Docker Desktop. Dame los comandos para ese
-   entorno.
-
-Al final, la versión 1 está TERMINADA solo cuando pasan los 6 criterios de
-aceptación de 2_spec.md, verificados con el smoke test de 7_quickstart.md.
-
-Empieza: resume en máximo 10 líneas qué vamos a construir (para confirmar que
-entendiste el alcance) y luego arranca con la Fase 0.
-```
-
-### A.3 Dónde queda todo: crear SU proyecto y pegar lo que la IA entrega
+### A.2 Prepare SU proyecto (ANTES de abrir el chat)
 
 **Ojo: NO se construye dentro de la carpeta clonada.** El repositorio clonado
 es el **material de referencia** — contiene la versión y sus especificaciones,
@@ -117,31 +78,38 @@ para ver cómo se llegó a lo que existe. Su trabajo de reconstrucción va en un
 1. Cree una carpeta para su proyecto (ej.: `mi_v1_producto/`) donde usted
    guarda sus trabajos — fuera de la carpeta clonada.
 2. Ábrala en VS Code (*File → Open Folder*).
-3. **Cree la estructura de carpetas** (el chat no puede crearla por usted).
-   En la terminal integrada (*Terminal → New Terminal*, PowerShell), parado
-   en su carpeta, un solo comando las crea todas:
+3. **Cree las CARPETAS** (el chat no puede tocar su disco). En la terminal
+   integrada (*Terminal → New Terminal*, PowerShell), parado en su carpeta:
 
    ```powershell
    mkdir specs, db, api_facturas\models, api_facturas\controllers, api_facturas\servicios\abstracciones, api_facturas\repositorios\abstracciones
    ```
 
-   (También puede crearlas una a una desde el explorador de VS Code, o
-   dejar que se creen solas al guardar cada archivo con su ruta completa.)
-4. Copie dentro: los 8 documentos de la spec (los de la tabla A.1) a la
-   subcarpeta `specs/` — así los tiene a mano y puede subirlos al chat desde
-   ahí — y el script `db/init.sql` del repositorio en `db/init.sql` (la BD
-   completa viene dada — la IA no debe generarla).
+4. **Cree los ARCHIVOS VACÍOS** (la IA los irá llenando uno a uno; los
+   `__init__.py` existen para que Python trate cada carpeta como paquete):
 
-La estructura final que usted irá llenando en SU carpeta (es la de
-`3_plan.md` §2):
+   ```powershell
+   New-Item docker-compose.yml, api_facturas\Dockerfile, api_facturas\requirements.txt, api_facturas\main.py, api_facturas\models\__init__.py, api_facturas\models\producto.py, api_facturas\controllers\__init__.py, api_facturas\controllers\producto_controller.py, api_facturas\servicios\__init__.py, api_facturas\servicios\servicio_producto.py, api_facturas\servicios\ensamblador.py, api_facturas\servicios\abstracciones\__init__.py, api_facturas\servicios\abstracciones\i_servicio_producto.py, api_facturas\repositorios\__init__.py, api_facturas\repositorios\repositorio_producto_postgresql.py, api_facturas\repositorios\abstracciones\__init__.py, api_facturas\repositorios\abstracciones\i_repositorio_producto.py
+   ```
+
+   (`db/init.sql` NO está en la lista a propósito: ese no nace vacío — se
+   copia del repositorio en el paso 5.)
+
+5. Copie dentro: los 8 documentos de la tabla A.1 a la subcarpeta `specs/`
+   — así los tiene a mano y puede subirlos al chat desde ahí — y el script
+   `db/init.sql` del repositorio en `db\init.sql` (la BD completa viene
+   dada — la IA no debe generarla).
+
+La estructura queda lista ANTES de hablar con la IA (es la de `3_plan.md`
+§2); al lado, la fase en que la IA le dictará cada contenido:
 
 ```
-mi_v1_producto/                   ← SU carpeta (nueva, vacía al empezar)
+mi_v1_producto/                   ← SU carpeta
 ├── specs/                        ← copia de los 8 documentos (solo lectura)
 ├── docker-compose.yml            ← Fase 0 (servicio postgres) y Fase 6 (servicio api-facturas)
 ├── db/
 │   └── init.sql                  ← Fase 0: COPIADO del repo (la BD completa; no lo genera la IA)
-├── .venv/                        ← Fase 0: el entorno virtual (para desarrollar fase a fase)
+├── .venv/                        ← Fase 0: el entorno virtual (lo crea el comando de abajo)
 └── api_facturas/                 ← TODO el código va aquí adentro
     ├── Dockerfile                ← Fase 6 (para el "un solo comando" final)
     ├── requirements.txt          ← Fase 0
@@ -161,18 +129,18 @@ mi_v1_producto/                   ← SU carpeta (nueva, vacía al empezar)
         └── repositorio_producto_postgresql.py  ← Fase 3
 ```
 
-**Cómo crear un archivo donde la IA diga** (VS Code): en el explorador
-(panel izquierdo), clic en el ícono *New File* y escriba la **ruta completa**,
-por ejemplo `api_facturas/models/producto.py` — VS Code crea las carpetas
-intermedias solas. Pegue el contenido que entregó la IA y guarde (`Ctrl+S`).
+**Cómo pegar lo que la IA entregue** (VS Code): el archivo **ya existe
+vacío** (lo creó el comando del paso 4) — ábralo desde el explorador, pegue
+el contenido COMPLETO que entregó la IA y guarde (`Ctrl+S`). Un bloque de la
+IA = un archivo completo (reemplaza todo, nunca "agregue al final").
 
 **Qué le entrega la IA y qué hace usted con eso** — en cada fase la IA
 entrega tres tipos de cosas:
 
 | La IA le entrega | Usted lo pone en |
 |---|---|
-| Un bloque de código con su ruta (ej.: "Archivo: `api_facturas/models/producto.py`") | Ese archivo, en ESA ruta exacta — un bloque = un archivo completo (reemplaza todo el contenido, no "agregue al final") |
-| (La BD no la entrega la IA) | `db/init.sql` se **copia del repositorio** tal cual, en la Fase 0 — si la IA intenta escribirle un `CREATE TABLE`, recuérdele que la BD ya viene dada |
+| Un bloque de código con su ruta (ej.: "Archivo: `api_facturas/models/producto.py`") | Ese archivo, que ya existe vacío en ESA ruta |
+| (La BD no la entrega la IA) | `db/init.sql` se **copia del repositorio** tal cual, en el paso 5 — si la IA intenta escribirle un `CREATE TABLE`, recuérdele que la BD ya viene dada |
 | Comandos (docker run, pip install, uvicorn, curl) | La terminal integrada del IDE, parado en la carpeta correcta (ver abajo) |
 
 Si un bloque llega **sin ruta**, no adivine: pregúntele "¿en qué archivo va
@@ -199,6 +167,50 @@ pip install -r api_facturas/requirements.txt
 
 > Nota: `.venv/`, `__pycache__/` y demás basura de ejecución no se suben a
 > git — la Fase 6 crea el `.gitignore` que los excluye.
+
+### A.3 El prompt (cópielo tal cual como PRIMER mensaje)
+
+```
+Actúa como mi asistente de programación para construir la VERSIÓN 1 de un
+proyecto universitario, partiendo de cero. Te adjunto 8 documentos: una
+constitución (reglas permanentes) y el spec kit de la versión 1 (spec, plan,
+research con las decisiones, modelo de datos, contratos, quickstart y tareas).
+
+REGLAS DE TRABAJO (no negociables):
+
+1. La especificación manda. No agregues NADA que los documentos no pidan:
+   ni tablas extra, ni motores extra, ni fábricas "por si acaso", ni
+   autenticación, ni mejoras de tu cosecha. Si crees que falta algo,
+   pregúntame antes.
+2. Vamos a seguir 8_tasks.md FASE POR FASE, en orden. En cada fase:
+   a. Me explicas en 3-5 líneas qué vamos a hacer y por qué.
+   b. Me entregas los archivos de la fase DE A UNO: primero la ruta exacta
+      y el contenido COMPLETO de UN solo archivo (listo para copiar y
+      pegar, con los comentarios didácticos en español que exige la
+      constitución). Esperas mi "listo" y solo entonces me das el
+      siguiente archivo de la fase.
+   c. Me dices el comando de verificación de la fase y QUÉ salida esperar.
+   d. TE DETIENES y esperas a que yo ejecute y te pegue el resultado.
+      No avanzas a la siguiente fase sin mi confirmación.
+   NOTA: la estructura de carpetas y los archivos vacíos YA EXISTEN en mi
+   proyecto — no me des comandos para crearlos; tu trabajo es dictarme el
+   CONTENIDO de cada archivo.
+3. Si mi resultado muestra un error, lo diagnosticamos y corregimos ANTES de
+   avanzar. Nunca "sigamos y después lo arreglamos".
+4. El código debe cumplir los contratos de 6_contracts.md al pie de la letra:
+   mismos verbos, mismas rutas, mismos códigos de estado, mismos formatos de
+   respuesta (incluido el contraste PUT=reemplazo completo vs PATCH=parcial).
+5. Todo en español: nombres, comentarios, docstrings y mensajes.
+6. Yo trabajo en Windows con un IDE (VS Code, usando su terminal integrada
+   de PowerShell), Python 3.12 y Docker Desktop. Dame los comandos para ese
+   entorno.
+
+Al final, la versión 1 está TERMINADA solo cuando pasan los 6 criterios de
+aceptación de 2_spec.md, verificados con el smoke test de 7_quickstart.md.
+
+Empieza: resume en máximo 10 líneas qué vamos a construir (para confirmar que
+entendiste el alcance) y luego arranca con la Fase 0.
+```
 
 ### A.4 El método de la conversación
 
