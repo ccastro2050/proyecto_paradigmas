@@ -36,11 +36,12 @@ descontado sin factura. El dinero no acepta "casi".
 > La BD pasa de un estado válido a otro estado válido: las reglas declaradas
 > (PK, FK, CHECK, triggers) se cumplen SIEMPRE.
 
-**Ejemplo desde la v1:** `CHECK (stock >= 0)` en la tabla `producto` — aunque
-la API validara mal, el motor rechaza un stock negativo. Es la doble muralla
-que la spec de la v1 llama "Pydantic valida en la API, la BD es la última
-línea de defensa". En v2 se suman las FK (no existe factura de un cliente
-inexistente).
+**Ejemplo desde la v1:** las **llaves foráneas** de bdfacturas — `cliente`
+apunta a `persona`, `factura` apunta a `cliente`. Aunque la API validara mal,
+el motor rechaza eliminar una persona que es cliente. Es la doble muralla que
+la spec de la v1 llama "Pydantic valida en la API, la BD es la última línea de
+defensa": Pydantic cuida el formato de lo que entra; las FK cuidan las
+relaciones entre tablas.
 
 ### I — Aislamiento (*Isolation*)
 > Transacciones concurrentes no se ven las mitades a medio hacer: el resultado
@@ -93,8 +94,9 @@ SELECT stock FROM producto WHERE codigo = 'PR001';   -- 0 (dentro de la transacc
 ROLLBACK;
 SELECT stock FROM producto WHERE codigo = 'PR001';   -- 17 otra vez: atomicidad
 
-UPDATE producto SET stock = -5 WHERE codigo = 'PR001';
--- ERROR: viola el CHECK → consistencia: el motor no acepta estados inválidos
+DELETE FROM persona WHERE codigo = 'P001';
+-- ERROR: viola la llave foránea (P001 es cliente) → consistencia:
+-- el motor no acepta estados inválidos, aunque nadie lo valide antes
 ```
 
 ## 6. Referencias
@@ -107,6 +109,6 @@ UPDATE producto SET stock = -5 WHERE codigo = 'PR001';
    <https://www.postgresql.org/docs/current/transaction-iso.html>
 4. Kleppmann, M. — *Designing Data-Intensive Applications* (O'Reilly, 2017),
    cap. 7: la mejor discusión moderna de ACID, aislamiento y sus trampas.
-5. En este repositorio: los CHECK de la tabla `producto` en el
+5. En este repositorio: las tablas y llaves foráneas de bdfacturas en el
    [modelo de datos de la v1](spec_kit/versiones/v1_producto_postgres/5_data_model.md);
-   el trigger de totales/stock llegará con la v2.
+   el trigger de totales/stock se usará desde la v2.
