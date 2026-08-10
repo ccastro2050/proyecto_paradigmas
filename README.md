@@ -6,6 +6,11 @@ guiado por especificaciones. El repositorio siempre contiene la **versión en
 curso, funcionando** — usted la ejecuta, la estudia y luego la **reconstruye
 desde cero** en su propio proyecto.
 
+> 🐳 Esta variante corre sobre **Docker**. Para las salas SIN Docker existe
+> el repositorio gemelo
+> [proyecto_paradigmas_sin_docker](https://github.com/ccastro2050/proyecto_paradigmas_sin_docker)
+> (PostgreSQL instalado + venv) — misma API, misma spec, otra infraestructura.
+
 ---
 
 ## 1. Cómo le trabaja el estudiante (léame primero)
