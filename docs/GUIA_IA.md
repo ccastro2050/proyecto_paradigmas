@@ -90,7 +90,7 @@ para ver cómo se llegó a lo que existe. Su trabajo de reconstrucción va en un
    `__init__.py` existen para que Python trate cada carpeta como paquete):
 
    ```powershell
-   New-Item docker-compose.yml, api_facturas\Dockerfile, api_facturas\requirements.txt, api_facturas\main.py, api_facturas\models\__init__.py, api_facturas\models\producto.py, api_facturas\controllers\__init__.py, api_facturas\controllers\producto_controller.py, api_facturas\servicios\__init__.py, api_facturas\servicios\servicio_producto.py, api_facturas\servicios\ensamblador.py, api_facturas\servicios\abstracciones\__init__.py, api_facturas\servicios\abstracciones\i_servicio_producto.py, api_facturas\repositorios\__init__.py, api_facturas\repositorios\repositorio_producto_postgresql.py, api_facturas\repositorios\abstracciones\__init__.py, api_facturas\repositorios\abstracciones\i_repositorio_producto.py
+   New-Item .gitignore, docker-compose.yml, api_facturas\Dockerfile, api_facturas\requirements.txt, api_facturas\main.py, api_facturas\models\__init__.py, api_facturas\models\producto.py, api_facturas\controllers\__init__.py, api_facturas\controllers\producto_controller.py, api_facturas\servicios\__init__.py, api_facturas\servicios\servicio_producto.py, api_facturas\servicios\ensamblador.py, api_facturas\servicios\abstracciones\__init__.py, api_facturas\servicios\abstracciones\i_servicio_producto.py, api_facturas\repositorios\__init__.py, api_facturas\repositorios\repositorio_producto_postgresql.py, api_facturas\repositorios\abstracciones\__init__.py, api_facturas\repositorios\abstracciones\i_repositorio_producto.py
    ```
 
    (`db/init.sql` NO está en la lista a propósito: ese no nace vacío — se
@@ -126,6 +126,7 @@ mi_v1_producto/                   ← SU carpeta
 │       └── versiones/
 │           └── v1_producto_postgres/ ← los 7 documentos de la v1 (la v2
 │                                       tendrá su propia carpeta al lado)
+├── .gitignore                    ← Fase 6 (excluye .venv/, __pycache__/, .env*)
 ├── docker-compose.yml            ← Fase 0 (servicio postgres) y Fase 6 (servicio api-facturas)
 ├── db/
 │   └── init.sql                  ← Fase 0: COPIADO del repo (la BD completa; no lo genera la IA)
