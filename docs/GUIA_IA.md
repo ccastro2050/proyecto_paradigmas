@@ -111,7 +111,7 @@ para ver cómo se llegó a lo que existe. Su trabajo de reconstrucción va en un
 
 **Antes de abrir el chat, verifique:** `docs\spec_kit\1_constitution.md` debe
 existir, `docs\spec_kit\versiones\v1_producto_postgres\` debe tener **7 archivos**
-(2_spec a 8_tasks) y `db\init.sql` debe tener contenido (~960 líneas).
+(2_spec a 8_tasks) y `db\init.sql` debe tener contenido (~1.050 líneas).
 Si algo está vacío, falta el paso 5.
 
 La estructura queda lista ANTES de hablar con la IA (es la de `3_plan.md`
@@ -212,6 +212,11 @@ proyecto universitario, partiendo de cero. Te adjunto 8 documentos: una
 constitución (reglas permanentes) y el spec kit de la versión 1 (spec, plan,
 research con las decisiones, modelo de datos, contratos, quickstart y tareas).
 
+El proyecto es Python 3.12 + FastAPI + PostgreSQL — así lo fija 3_plan.md.
+Si en tu respuesta aparece OTRO lenguaje o framework (PHP, Java, Node,
+Flask…), significa que no leíste los documentos adjuntos: detente y dímelo
+en vez de continuar.
+
 REGLAS DE TRABAJO (no negociables):
 
 1. La especificación manda. No agregues NADA que los documentos no pidan:
@@ -283,7 +288,12 @@ entendiste el alcance) y luego arranca con la Fase 0.
    `localhost:8102`, y donde diga `15432` use `15532`.
 4. **Si la IA se acelera** y entrega varios archivos de un tirón,
    recuérdele la regla 2b: "de a uno, espera mi listo".
-5. **Si el chat pierde el contexto** (conversaciones largas): abra un chat
+5. **Si la primera respuesta llega en OTRO lenguaje** (PHP, Java, Node…),
+   no corrija sobre eso: es la señal inequívoca de que la IA **no leyó los
+   adjuntos**. Cierre ese chat, verifique que los 8 documentos realmente
+   cargaron (deslice el carrusel de adjuntos), y empiece de nuevo con el
+   prompt tal cual.
+6. **Si el chat pierde el contexto** (conversaciones largas): abra un chat
    nuevo, vuelva a subir los 8 documentos y agregue al prompt: "Ya tengo
    construidas las fases 0 a N; te pego el código actual. Continuemos en la
    fase N+1" (y pegue sus archivos).
