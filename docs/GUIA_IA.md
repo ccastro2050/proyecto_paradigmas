@@ -25,7 +25,8 @@
 > cada fase** que pide `8_tasks.md`. Ejemplos reales de la v1:
 > `docker compose up -d` (levantar la BD), `pip install -r
 > api_facturas/requirements.txt` (instalar dependencias),
-> `uvicorn main:app --port 8002 --reload` (arrancar la API) y los `curl` del
+> `uvicorn main:app --port 8002 --reload` (arrancar la API),
+> `python pruebas\prueba_capas.py` (la prueba de capas) y los `curl` del
 > smoke test (`curl http://localhost:8002/api/producto`). En el chat, la IA
 > se los dicta y USTED los ejecuta; en el IDE agéntico, el agente los ejecuta
 > y usted revisa la salida.
@@ -82,7 +83,7 @@ para ver cómo se llegó a lo que existe. Su trabajo de reconstrucción va en un
    integrada (*Terminal → New Terminal*, PowerShell), parado en su carpeta:
 
    ```powershell
-   mkdir docs\spec_kit\versiones\v1_producto_postgres, db, api_facturas\models, api_facturas\controllers, api_facturas\servicios\abstracciones, api_facturas\repositorios\abstracciones
+   mkdir docs\spec_kit\versiones\v1_producto_postgres, db, api_facturas\models, api_facturas\controllers, api_facturas\servicios\abstracciones, api_facturas\repositorios\abstracciones, api_facturas\pruebas
    ```
 
 4. **Cree los ARCHIVOS VACÍOS** — **USTED los irá llenando** uno a uno,
@@ -90,7 +91,7 @@ para ver cómo se llegó a lo que existe. Su trabajo de reconstrucción va en un
    `__init__.py` existen para que Python trate cada carpeta como paquete):
 
    ```powershell
-   New-Item .gitignore, docker-compose.yml, api_facturas\Dockerfile, api_facturas\requirements.txt, api_facturas\main.py, api_facturas\models\__init__.py, api_facturas\models\producto.py, api_facturas\controllers\__init__.py, api_facturas\controllers\producto_controller.py, api_facturas\servicios\__init__.py, api_facturas\servicios\servicio_producto.py, api_facturas\servicios\ensamblador.py, api_facturas\servicios\abstracciones\__init__.py, api_facturas\servicios\abstracciones\i_servicio_producto.py, api_facturas\repositorios\__init__.py, api_facturas\repositorios\repositorio_producto_postgresql.py, api_facturas\repositorios\abstracciones\__init__.py, api_facturas\repositorios\abstracciones\i_repositorio_producto.py
+   New-Item .gitignore, docker-compose.yml, api_facturas\Dockerfile, api_facturas\requirements.txt, api_facturas\main.py, api_facturas\models\__init__.py, api_facturas\models\producto.py, api_facturas\controllers\__init__.py, api_facturas\controllers\producto_controller.py, api_facturas\servicios\__init__.py, api_facturas\servicios\servicio_producto.py, api_facturas\servicios\ensamblador.py, api_facturas\servicios\abstracciones\__init__.py, api_facturas\servicios\abstracciones\i_servicio_producto.py, api_facturas\repositorios\__init__.py, api_facturas\repositorios\repositorio_producto_postgresql.py, api_facturas\repositorios\abstracciones\__init__.py, api_facturas\repositorios\abstracciones\i_repositorio_producto.py, api_facturas\pruebas\__init__.py, api_facturas\pruebas\prueba_capas.py
    ```
 
    (`db/init.sql` NO está en la lista a propósito: ese no nace vacío — se
@@ -144,10 +145,12 @@ mi_v1_producto/                   ← SU carpeta
     │   │   └── i_servicio_producto.py ← Fase 2
     │   ├── servicio_producto.py       ← Fase 4
     │   └── ensamblador.py             ← Fase 4
-    └── repositorios/
-        ├── abstracciones/
-        │   └── i_repositorio_producto.py  ← Fase 2
-        └── repositorio_producto_postgresql.py  ← Fase 3
+    ├── repositorios/
+    │   ├── abstracciones/
+    │   │   └── i_repositorio_producto.py  ← Fase 2
+    │   └── repositorio_producto_postgresql.py  ← Fase 3
+    └── pruebas/
+        └── prueba_capas.py           ← Fase 4 (criterio 6: repo falso en memoria)
 ```
 
 **Cómo pegar lo que la IA entregue** (VS Code): el archivo **ya existe
@@ -180,7 +183,7 @@ un comando parado en la carpeta equivocada — "no encuentro el archivo"):
 | Comando | Se corre desde |
 |---|---|
 | `docker compose ...` · `pip install ...` | La **raíz** de su proyecto (ahí viven `docker-compose.yml` y `.venv`) |
-| `uvicorn main:app --port 8002 --reload` | `api_facturas\` (ahí vive `main.py`) — primero `cd api_facturas` |
+| `uvicorn main:app --port 8002 --reload` · `python pruebas\prueba_capas.py` | `api_facturas\` (ahí vive el código) — primero `cd api_facturas` |
 
 **El entorno virtual (Fase 0), por si la IA no lo detalla:**
 

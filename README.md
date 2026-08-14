@@ -113,13 +113,19 @@ proyecto_paradigmas/
 │   │                            #   ProductoReemplazo, ProductoActualizar) → los 422
 │   ├── servicios/               # Capa 2 — negocio: servicio + ensamblador (proto-fábrica)
 │   │   └── abstracciones/       #   la interfaz (typing.Protocol) que la capa 1 conoce
-│   └── repositorios/            # Capa 3 — datos: SQL asíncrono contra PostgreSQL
-│       └── abstracciones/       #   la interfaz que la capa 2 conoce
+│   ├── repositorios/            # Capa 3 — datos: SQL asíncrono contra PostgreSQL
+│   │   └── abstracciones/       #   la interfaz que la capa 2 conoce
+│   └── pruebas/                 # prueba_capas.py — el criterio 6: el servicio
+│                                #   con un repositorio FALSO, sin PostgreSQL
+│
+├── postman/                     # La colección de la API (13 peticiones en orden
+│                                #   didáctico) — alternativa a Swagger, con README
 │
 ├── docs/
 │   ├── spec_kit/                # LAS ESPECIFICACIONES: constitución permanente +
 │   │                            #   una carpeta de specs por versión (v1, v2, …)
 │   ├── GUIA_IA.md               # Cómo reconstruir la versión desde 0 con ayuda de una IA
+│   ├── FLUJO_DE_UNA_PETICION.md # Dónde "está" el GET y el viaje de una petición por capas
 │   ├── PARADIGMA_POO.md         # Material conceptual: POO (con Pydantic), SOLID+capas,
 │   ├── SOLID_Y_CAPAS.md         #   ACID, Docker y SDD (un .md por tema)
 │   ├── PRINCIPIOS_ACID.md       #
@@ -175,6 +181,7 @@ aceptación (se cierra con tag). Detalle completo:
 |---|---|
 | [SDD y Spec Kit](docs/SDD_SPECKIT.md) | La metodología con la que se trabaja este curso: la spec manda sobre el código |
 | [El paradigma P.O.O.](docs/PARADIGMA_POO.md) | Qué es un paradigma, los 4 pilares, la P.O.O. de Python (`Protocol`, duck typing) y **Pydantic** como clases que validan datos |
+| [El flujo de una petición](docs/FLUJO_DE_UNA_PETICION.md) | Dónde "está" el GET (el decorador), quién captura el body del POST (Pydantic) y el viaje completo capa por capa — con la pareja PUT/PATCH para probar |
 | [SOLID y programación por capas](docs/SOLID_Y_CAPAS.md) | Los 5 principios y las capas — y en qué versión se demuestra cada uno |
 | [Principios ACID](docs/PRINCIPIOS_ACID.md) | Las 4 garantías transaccionales, por qué una facturación las exige, y el contraste con BASE |
 | [Conceptos de Docker](docs/CONCEPTOS_DOCKER.md) | Imagen, contenedor, volumen, compose (con el `docker-compose.yml` del proyecto explicado línea por línea) y por qué NO se necesita Kubernetes |
