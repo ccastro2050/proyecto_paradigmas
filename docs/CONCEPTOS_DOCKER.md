@@ -198,7 +198,7 @@ sobrevivir a la caída de un nodo. **El puente conceptual:** ambos son YAML
 declarativo describiendo estado deseado — quien domina un compose ya entiende
 la mitad conceptual de K8s; le falta solo la parte de clúster.
 
-## 7. Los comandos que este curso usa (chuleta)
+## 7. Los comandos que este curso usa (el "pastel" — en inglés: cheat sheet)
 
 ```powershell
 docker run -d --name X -p H:C -e VAR=v -v ruta:destino imagen   # crear y arrancar
