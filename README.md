@@ -127,7 +127,7 @@ proyecto_paradigmas/
 │   ├── GUIA_IA.md               # Cómo reconstruir la versión desde 0 con ayuda de una IA
 │   ├── FLUJO_DE_UNA_PETICION.md # Dónde "está" el GET y el viaje de una petición por capas
 │   ├── PARADIGMA_POO.md         # Material conceptual: POO (con Pydantic), SOLID+capas,
-│   ├── SOLID_Y_CAPAS.md         #   ACID, Docker y SDD (un .md por tema)
+│   ├── SOLID_CAPAS_PATRONES.md         #   ACID, Docker y SDD (un .md por tema)
 │   ├── PRINCIPIOS_ACID.md       #
 │   ├── CONCEPTOS_DOCKER.md      #
 │   ├── SDD_SPECKIT.md           #
@@ -183,7 +183,7 @@ aceptación (se cierra con tag). Detalle completo:
 | [El paradigma P.O.O.](docs/PARADIGMA_POO.md) | Qué es un paradigma, los 4 pilares, la P.O.O. de Python (`Protocol`, duck typing) y **Pydantic** como clases que validan datos |
 | [El flujo de una petición](docs/FLUJO_DE_UNA_PETICION.md) | Dónde "está" el GET (el decorador), quién captura el body del POST (Pydantic) y el viaje completo capa por capa — con la pareja PUT/PATCH para probar |
 | [Colección de Postman](postman/README.md) | Los 13 endpoints de la v1 listos para importar y probar con clics — incluida la pareja PUT=422 vs PATCH=200 |
-| [SOLID y programación por capas](docs/SOLID_Y_CAPAS.md) | Los 5 principios y las capas — y en qué versión se demuestra cada uno |
+| [SOLID, capas y patrones de diseño](docs/SOLID_CAPAS_PATRONES.md) | Los 5 principios y las capas — y en qué versión se demuestra cada uno |
 | [Principios ACID](docs/PRINCIPIOS_ACID.md) | Las 4 garantías transaccionales, por qué una facturación las exige, y el contraste con BASE |
 | [Conceptos de Docker](docs/CONCEPTOS_DOCKER.md) | Imagen, contenedor, volumen, compose (con el `docker-compose.yml` del proyecto explicado línea por línea) y por qué NO se necesita Kubernetes |
 | [Tutorial pgAdmin](docs/TUTORIAL_PGADMIN.md) | Administrar la BD paso a paso: conectarse, explorar, editar datos (y verlos cambiar en la API), Query Tool y ERD |
