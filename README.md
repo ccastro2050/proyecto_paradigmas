@@ -153,8 +153,7 @@ v1  api_facturas: CRUD de producto, solo PostgreSQL   ← USTED ESTÁ AQUÍ (cer
 v2  más tablas (persona, factura maestro-detalle…)
 v3  segundo motor (MariaDB) — nace la fábrica y DB_PROVIDER
 v4  tercer motor (SQL Server) + docker compose completo
-v5  API genérica (/api/{tabla})
-v6  frontend Flask
+v5  frontend Flask
 ```
 
 La regla del juego: la **constitución** es permanente, cada versión tiene su
